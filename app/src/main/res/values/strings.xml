@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Dice Simulator</string>
+    <string name="button_send">Throw now!</string>
+    <string name="button_history">Last throws</string>
+    <string name="thrown_dice">Dice shown as text</string>
+    <string name="lucky_percentage">Lucky percentage</string>
+    <string name="lucky_calculated">"Luck: "</string>
+    <string name="image">Die</string>
+    <string name="title_activity_display_message">Last Thrown Dice</string>
+    <string name="not_thrown_yet">Not thrown yet</string>
+    <string name="clear_dice">Clear</string>
+    <string name="mnu_settings_submenu">Settings</string>
+    <string name="action_settings">Audio settings</string>
+    <string name="title_activity_settings">Audio Settings</string>
+    <string name="check_box_dice_sound">Play dice sound</string>
+    <string name="check_box_numbers_sound">Play numbers sound</string>
+    <string name="language_settings">Language settings</string>
+    <string name="title_activity_language">Language Settings</string>
+    <string name="title_language_settings">Language Settings</string>
+    <string name="English">English</string>
+    <string name="Italian">Italian</string>
+    <string name="Romanian">Romanian</string>
+    <string name="number_of_dice">Number of dice</string>
+    <string name="title_number_of_dice">Number of dice</string>
+    <string name="title_activity_number_of_dice">Number of Dice</string>
+    <string name="other_settings">Other settings</string>
+    <string name="title_activity_other_settings">Other settings</string>
+    <string name="checkbox_onshake">Throw dice on shake</string>
+    <string name="checkbox_onshake_pause">Throw dice on shake if screen is locked</string>
+    <string name="checkbox_iswakelock">Keep screen awake</string>
+    <string name="sorting_method">Dice sorting</string>
+    <string name="sorting_descendent">Descendant</string>
+    <string name="sorting_ascendent">Ascendant</string>
+    <string name="sorting_none">None</string>
+    <string name="set_defaults">Default settings</string>
+    <string name="set_defaults_title">Default settings</string>
+    <string name="set_defaults_body">Do you want to Reset all application settings?</string>
+    <string name="exit">Exit</string>
+    <string name="about">About</string>
+    <string name="app_version">Dice Simulator, version 2.0</string>
+    <string name="app_release_date">Version 1.0 released on Monday, July 28th, 2014</string>
+    <string name="app_last_update">Last update, version 2.0: Tuesday, December 13rd, 2022</string>
+    <string name="app_creator">Programmed by Emanuel Boboiu (Manu)</string>
+    <string name="app_credits">Voice: Giulia Guerra and Cristi Csetnek</string>
+    <string name="app_credits2">Dice drawn by Ștefan Halus</string>
+    <string name="phone_number">Phone no: +40740203043</string>
+    <string name="email_address">E-mail: android@pontes.ro</string>
+    <string name="web_address">Web: www.android.pontes.ro</string>
+
+</resources>

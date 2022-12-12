@@ -1,0 +1,49 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="ro.pontes.pontesdice.MainActivity">
+
+    <item
+        android:id="@+id/clear_dice"
+        android:orderInCategory="50"
+        android:showAsAction="ifRoom"
+        android:title="@string/clear_dice" />
+    <item
+        android:id="@+id/mnuSettingsSubmenu"
+        android:orderInCategory="75"
+        android:showAsAction="never"
+        android:title="@string/mnu_settings_submenu">
+
+        <!-- Settings submenu: -->
+        <menu>
+            <item
+                android:id="@+id/number_of_dice"
+                android:orderInCategory="99"
+                android:title="@string/number_of_dice" />
+            <item
+                android:id="@+id/action_settings"
+                android:orderInCategory="100"
+                android:title="@string/action_settings" />
+            <item
+                android:id="@+id/language_settings"
+                android:orderInCategory="101"
+                android:title="@string/language_settings" />
+            <item
+                android:id="@+id/other_settings"
+                android:orderInCategory="102"
+                android:title="@string/other_settings" />
+            <item
+                android:id="@+id/default_settings"
+                android:orderInCategory="103"
+                android:title="@string/set_defaults" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/about_program"
+        android:orderInCategory="200"
+        android:title="@string/about" />
+    <item
+        android:id="@+id/exit_program"
+        android:orderInCategory="900"
+        android:title="@string/exit" />
+
+</menu>

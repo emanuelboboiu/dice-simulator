@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Simulator de zaruri</string>
+    <string name="button_history">Ultimele aruncări]</string>
+    <string name="button_send">Aruncă acum!</string>
+    <string name="clear_dice">Golește</string>
+    <string name="mnu_settings_submenu">Setări</string>
+    <string name="action_settings">Setări audio</string>
+    <string name="language_settings">Setări de limbă</string>
+    <string name="number_of_dice">Număr de zaruri</string>
+    <string name="other_settings">Alte setări</string>
+    <string name="title_activity_other_settings">Alte setări]</string>
+    <string name="checkbox_onshake">Aruncă zarurile la scuturare</string>
+    <string name="checkbox_onshake_pause">Aruncă zarurile la scuturare și dacă ecranul este blocat</string>
+    <string name="checkbox_iswakelock">Menținere ecran activ</string>
+    <string name="set_defaults">Setări implicite</string>
+    <string name="set_defaults_title">Setări implicite]</string>
+    <string name="set_defaults_body">Vrei să resetezi toate setările?</string>
+    <string name="exit">Ieșire</string>
+    <string name="thrown_dice">Afișate ca text</string>
+    <string name="lucky_percentage">Procentaj noroc</string>
+    <string name="lucky_calculated">"Noroc: "</string>
+    <string name="title_activity_display_message">Ultimele zaruri aruncate</string>
+    <string name="not_thrown_yet">Nearuncat încă</string>
+    <string name="title_activity_settings">Setări audio</string>
+    <string name="title_language_settings">Setări de limbă</string>
+    <string name="title_number_of_dice">Număr de zaruri</string>
+    <string name="check_box_dice_sound">Redă sunet zaruri</string>
+    <string name="check_box_numbers_sound">Anunță vocal numerele</string>
+    <string name="English">Engleză</string>
+    <string name="Italian">Italiană</string>
+    <string name="Romanian">Română</string>
+    <string name="image">Zar</string>
+    <string name="sorting_method">Sortare zaruri</string>
+    <string name="sorting_descendent">Descrescător</string>
+    <string name="sorting_ascendent">Crescător</string>
+    <string name="sorting_none">Fără</string>
+    <string name="about">Despre</string>
+    <string name="app_version">Simulator de zaruri, versiune 2.0</string>
+    <string name="app_release_date">Versiune 1.0 finalizată luni, 28 iulie 2014</string>
+    <string name="app_last_update">Ultima actualizare, 2.0: marți, 13 decembrie 2022</string>
+    <string name="app_creator">Programat de Emanuel Boboiu (Manu)</string>
+    <string name="app_credits">Voci: Giulia Guerra și Cristi Csetnek</string>
+    <string name="app_credits2">Zaruri desenate de Ștefan Halus</string>
+    <string name="phone_number">Telefon: +40740203043</string>
+    <string name="email_address">E-mail: android@pontes.ro</string>
+    <string name="web_address">Web: www.android.pontes.ro</string>
+
+</resources>
