@@ -70,8 +70,7 @@ public class MainActivity extends Activity {
     // The about dialog:
     public void showAbout() {
         // Inflate the about message contents
-        View messageView = getLayoutInflater().inflate(R.layout.about_dialog,
-                null, false);
+        View messageView = getLayoutInflater().inflate(R.layout.about_dialog, null, false);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // builder.setIcon(R.drawable.app_icon);
@@ -87,11 +86,11 @@ public class MainActivity extends Activity {
      */
     public void clearDice() {
         String tempString = getString(R.string.thrown_dice);
-        TextView textView = (TextView) findViewById(R.id.tvThrownDice);
+        TextView textView = findViewById(R.id.tvThrownDice);
         textView.setText(tempString);
 
         tempString = getString(R.string.lucky_percentage);
-        TextView textView2 = (TextView) findViewById(R.id.tvLuckyPercentage);
+        TextView textView2 = findViewById(R.id.tvLuckyPercentage);
         textView2.setText(tempString);
 
         // Let's empty the array lastDice from UsefulThings:
@@ -170,14 +169,12 @@ public class MainActivity extends Activity {
 
         // To keep screen awake:
         if (MainActivity.isWakeLock) {
-            getWindow()
-                    .addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         } // end wake lock.
 
         // // ShakeDetector initialisation
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mAccelerometer = mSensorManager
-                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mShakeDetector = new ShakeDetector();
         /*
          * method you would use to setup whatever you want done once the
@@ -208,8 +205,7 @@ public class MainActivity extends Activity {
         if (isOnShake) {
             // Add the following line to register the Session Manager Listener
             // onResume
-            mSensorManager.registerListener(mShakeDetector, mAccelerometer,
-                    SensorManager.SENSOR_DELAY_UI);
+            mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
         }
     } // end onResume method.
 
@@ -262,22 +258,14 @@ public class MainActivity extends Activity {
             // Get the strings:
             String tempTitle = getString(R.string.set_defaults_title);
             String tempBody = getString(R.string.set_defaults_body);
-            new AlertDialog.Builder(this)
-                    .setTitle(tempTitle)
-                    .setMessage(tempBody)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setPositiveButton(android.R.string.yes,
-                            (dialog, whichButton) -> {
-                                UsefulThings tempUT = new UsefulThings(c);
-                                tempUT.setDefaultSettings();
-                                tempUT.chargeSettings();
-                                // To be sure the shake detection will be
-                                // again available, as a default setting:
-                                mSensorManager.registerListener(
-                                        mShakeDetector, mAccelerometer,
-                                        SensorManager.SENSOR_DELAY_UI);
-                            }).setNegativeButton(android.R.string.no, null)
-                    .show();
+            new AlertDialog.Builder(this).setTitle(tempTitle).setMessage(tempBody).setIcon(android.R.drawable.ic_dialog_alert).setPositiveButton(android.R.string.yes, (dialog, whichButton) -> {
+                UsefulThings tempUT = new UsefulThings(c);
+                tempUT.setDefaultSettings();
+                tempUT.chargeSettings();
+                // To be sure the shake detection will be
+                // again available, as a default setting:
+                mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+            }).setNegativeButton(android.R.string.no, null).show();
         } else if (id == R.id.about_program) {
             showAbout();
         } else if (id == R.id.exit_program) {
@@ -372,17 +360,12 @@ public class MainActivity extends Activity {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    String[] aTempDice = UsefulThings.lastDice[0]
-                            .split(", ");
+                    String[] aTempDice = UsefulThings.lastDice[0].split(", ");
                     for (int i = 0; i < aTempDice.length; i++) {
                         if (i < aTempDice.length - 1) {
-                            OurMediaPlayer.playWait(
-                                    getApplicationContext(),
-                                    Integer.parseInt(aTempDice[i]));
+                            OurMediaPlayer.playWait(getApplicationContext(), Integer.parseInt(aTempDice[i]));
                         } else {
-                            OurMediaPlayer.playWait(
-                                    getApplicationContext(),
-                                    Integer.parseInt(aTempDice[i]) + 6);
+                            OurMediaPlayer.playWait(getApplicationContext(), Integer.parseInt(aTempDice[i]) + 6);
                         }
                     } // end for.
                     isSpeaking = false;
@@ -399,7 +382,7 @@ public class MainActivity extends Activity {
     public void fillLastDiceTextView() {
         // If there is a thrown dice, let's refill the text view:
         if (UsefulThings.lastDice[0] != null) {
-            TextView textView = (TextView) findViewById(R.id.tvThrownDice);
+            TextView textView = findViewById(R.id.tvThrownDice);
             textView.setText(UsefulThings.lastDice[0]);
         }
     } // end fillLastDiceTextView.
@@ -409,7 +392,7 @@ public class MainActivity extends Activity {
         if (UsefulThings.lastDice[0] != null) {
             // Refill also the lucky percentage:
             String tempString = getString(R.string.lucky_calculated);
-            TextView textView2 = (TextView) findViewById(R.id.tvLuckyPercentage);
+            TextView textView2 = findViewById(R.id.tvLuckyPercentage);
             textView2.setText(tempString + UsefulThings.iGeneralAverage + "%");
         }
     } // end fill lucky percentage text view.
@@ -418,10 +401,9 @@ public class MainActivity extends Activity {
 
         // Show the images on the screen in a linear layout llDiceImages:
         // Find the LinearLayout:
-        LinearLayout ll = (LinearLayout) findViewById(R.id.llDiceImages);
+        LinearLayout ll = findViewById(R.id.llDiceImages);
         // Clear if there is something there:
-        if (ll.getChildCount() > 0)
-            ll.removeAllViews();
+        if (ll.getChildCount() > 0) ll.removeAllViews();
 
         // Just if there is a last hand of dice in UsefulThings.lastDice[0]:
         if (UsefulThings.lastDice[0] != null) {
@@ -434,10 +416,8 @@ public class MainActivity extends Activity {
                 ImageView mImage = new ImageView(c); // c is actual context.
                 String uri = "@drawable/d" + s; // the name of the image
                 // dynamically.
-                int imageResource = getResources().getIdentifier(uri, null,
-                        getPackageName());
-                @SuppressWarnings("deprecation")
-                Drawable res = getResources().getDrawable(imageResource);
+                int imageResource = getResources().getIdentifier(uri, null, getPackageName());
+                @SuppressWarnings("deprecation") Drawable res = getResources().getDrawable(imageResource);
                 mImage.setImageDrawable(res);
                 String tempString = getString(R.string.image);
                 mImage.setContentDescription(tempString + " " + s);

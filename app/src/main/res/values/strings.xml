@@ -39,9 +39,9 @@
     <string name="set_defaults_body">Do you want to Reset all application settings?</string>
     <string name="exit">Exit</string>
     <string name="about">About</string>
-    <string name="app_version">Dice Simulator, version 2.0</string>
+    <string name="app_version">Dice Simulator, version 2.1</string>
     <string name="app_release_date">Version 1.0 released on Monday, July 28th, 2014</string>
-    <string name="app_last_update">Last update, version 2.0: Tuesday, December 13rd, 2022</string>
+    <string name="app_last_update">Last update, version 2.1: Tuesday, October 4th, 2023</string>
     <string name="app_creator">Programmed by Emanuel Boboiu (Manu)</string>
     <string name="app_credits">Voice: Giulia Guerra and Cristi Csetnek</string>
     <string name="app_credits2">Dice drawn by Ștefan Halus</string>
