@@ -1,13 +1,17 @@
-apply plugin: 'com.android.application'
+plugins {
+    id 'com.android.application'
+}
 
 android {
-    compileSdkVersion 34
-    buildToolsVersion "33.0.0"
+    namespace "ro.pontes.pontesdice"
+    compileSdk 36
 
     defaultConfig {
         applicationId "ro.pontes.pontesdice"
-        minSdkVersion 23
-        targetSdkVersion 34
+        minSdk 23
+        targetSdk 36
+        versionCode 13
+        versionName "3.1"
     }
 
     buildTypes {

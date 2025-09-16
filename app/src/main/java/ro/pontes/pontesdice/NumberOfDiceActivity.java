@@ -25,50 +25,27 @@ public class NumberOfDiceActivity extends Activity {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
 
-        UsefulThings ut = new UsefulThings(getApplicationContext()); // we need
-        // it
-        // for
-        // saving
-        // with
-        // SharedPreferences.
+        UsefulThings ut = new UsefulThings(getApplicationContext());
         String key = "iNumberOfDice";
 
-        // Check which radio button was clicked:
-        switch (view.getId()) {
-            case R.id.radio_1:
-                if (checked) {
-                    MainActivity.iNumberOfDice = 1;
-                }
-                break;
-            case R.id.radio_2:
-                if (checked) {
-                    MainActivity.iNumberOfDice = 2;
-                }
-                break;
-            case R.id.radio_3:
-                if (checked) {
-                    MainActivity.iNumberOfDice = 3;
-                }
-                break;
-            case R.id.radio_4:
-                if (checked) {
-                    MainActivity.iNumberOfDice = 4;
-                }
-                break;
-            case R.id.radio_5:
-                if (checked) {
-                    MainActivity.iNumberOfDice = 5;
-                }
-                break;
-            case R.id.radio_6:
-                if (checked) {
-                    MainActivity.iNumberOfDice = 6;
-                }
-                break;
-        } // } // end switch.
+        int id = view.getId();
 
-        // Save now the setting:
+        if (id == R.id.radio_1 && checked) {
+            MainActivity.iNumberOfDice = 1;
+        } else if (id == R.id.radio_2 && checked) {
+            MainActivity.iNumberOfDice = 2;
+        } else if (id == R.id.radio_3 && checked) {
+            MainActivity.iNumberOfDice = 3;
+        } else if (id == R.id.radio_4 && checked) {
+            MainActivity.iNumberOfDice = 4;
+        } else if (id == R.id.radio_5 && checked) {
+            MainActivity.iNumberOfDice = 5;
+        } else if (id == R.id.radio_6 && checked) {
+            MainActivity.iNumberOfDice = 6;
+        }
+
+        // Save the setting:
         ut.saveIntSettings(key, MainActivity.iNumberOfDice);
     } // end onRadioButtonClicked.
 
-}
+} // end class.

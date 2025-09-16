@@ -30,21 +30,17 @@ public class SettingsActivity extends Activity {
         // Is the view now checked?
         boolean checked = ((CheckBox) view).isChecked();
 
-        UsefulThings ut = new UsefulThings(getApplicationContext()); // to save
-        // changes.
+        UsefulThings ut = new UsefulThings(getApplicationContext()); // to save changes.
 
-        // Check which check box was clicked
-        switch (view.getId()) {
-            case R.id.checkbox_dice_sound:
-                MainActivity.isSoundDice = checked;
-                ut.saveBooleanSettings("isSoundDice", MainActivity.isSoundDice);
-                break;
-            case R.id.checkbox_numbers_sound:
-                MainActivity.isNumberSpoken = checked;
-                ut.saveBooleanSettings("isNumberSpoken",
-                        MainActivity.isNumberSpoken);
-                break;
-        } // end switch.
-    }
+        int id = view.getId();
+
+        if (id == R.id.checkbox_dice_sound) {
+            MainActivity.isSoundDice = checked;
+            ut.saveBooleanSettings("isSoundDice", MainActivity.isSoundDice);
+        } else if (id == R.id.checkbox_numbers_sound) {
+            MainActivity.isNumberSpoken = checked;
+            ut.saveBooleanSettings("isNumberSpoken", MainActivity.isNumberSpoken);
+        }
+    } // end onCheckboxClicked() method.
 
 } // end settings activity.

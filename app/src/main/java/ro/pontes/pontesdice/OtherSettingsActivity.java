@@ -41,25 +41,20 @@ public class OtherSettingsActivity extends Activity {
         // Is the view now checked?
         boolean checked = ((CheckBox) view).isChecked();
 
-        UsefulThings ut = new UsefulThings(getApplicationContext()); // to save
-        // changes.
+        UsefulThings ut = new UsefulThings(getApplicationContext());
 
-        // Check which check box was clicked
-        switch (view.getId()) {
-            case R.id.onshake_pause_checkbox:
-                MainActivity.isOnShakeInPause = checked;
-                ut.saveBooleanSettings("isOnShakeInPause",
-                        MainActivity.isOnShakeInPause);
-                break;
-            case R.id.onshake_checkbox:
-                MainActivity.isOnShake = checked;
-                ut.saveBooleanSettings("isOnShake", MainActivity.isOnShake);
-                break;
-            case R.id.iswakelock_checkbox:
-                MainActivity.isWakeLock = checked;
-                ut.saveBooleanSettings("isWakeLock", MainActivity.isWakeLock);
-                break;
-        } // end switch.
+        int id = view.getId();
+
+        if (id == R.id.onshake_pause_checkbox) {
+            MainActivity.isOnShakeInPause = checked;
+            ut.saveBooleanSettings("isOnShakeInPause", MainActivity.isOnShakeInPause);
+        } else if (id == R.id.onshake_checkbox) {
+            MainActivity.isOnShake = checked;
+            ut.saveBooleanSettings("isOnShake", MainActivity.isOnShake);
+        } else if (id == R.id.iswakelock_checkbox) {
+            MainActivity.isWakeLock = checked;
+            ut.saveBooleanSettings("isWakeLock", MainActivity.isWakeLock);
+        }
     } // end the function called when the check box was clicked.
 
     // Now for sorting method, radio buttons:
@@ -69,32 +64,18 @@ public class OtherSettingsActivity extends Activity {
 
         String key = "sortMethod";
 
-        // Check which radio button was clicked:
-        switch (view.getId()) {
-            case R.id.radio_none:
-                if (checked) {
-                    MainActivity.sortMethod = 0;
-                }
-                break;
-            case R.id.radio_ascendant:
-                if (checked) {
-                    MainActivity.sortMethod = 1;
-                }
-                break;
-            case R.id.radio_descendant:
-                if (checked) {
-                    MainActivity.sortMethod = 2;
-                }
-                break;
-        } // } // end switch.
+        int id = view.getId();
 
-        // Save now the setting:
-        UsefulThings ut = new UsefulThings(getApplicationContext()); // we need
-        // it
-        // for
-        // saving
-        // with
-        // SharedPreferences.
+        if (id == R.id.radio_none && checked) {
+            MainActivity.sortMethod = 0;
+        } else if (id == R.id.radio_ascendant && checked) {
+            MainActivity.sortMethod = 1;
+        } else if (id == R.id.radio_descendant && checked) {
+            MainActivity.sortMethod = 2;
+        }
+
+        // Save the setting:
+        UsefulThings ut = new UsefulThings(getApplicationContext());
         ut.saveIntSettings(key, MainActivity.sortMethod);
     } // end onRadioButtonClicked.
 

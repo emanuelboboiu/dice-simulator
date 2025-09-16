@@ -22,39 +22,24 @@ public class LanguageActivity extends Activity {
     } // end onCreate method.
 
     // See and save the radio button clicked:
-
     public void onRadioButtonClicked(View view) {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
 
-        UsefulThings ut = new UsefulThings(getApplicationContext()); // we need
-        // it
-        // for
-        // saving
-        // with
-        // SharedPreferences.
+        UsefulThings ut = new UsefulThings(getApplicationContext());
         String key = "currentLanguage";
 
-        // Check which radio button was clicked:
-        switch (view.getId()) {
-            case R.id.radio_en:
-                if (checked) {
-                    MainActivity.currentLanguage = "en";
-                }
-                break;
-            case R.id.radio_it:
-                if (checked) {
-                    MainActivity.currentLanguage = "it";
-                }
-                break;
-            case R.id.radio_ro:
-                if (checked) {
-                    MainActivity.currentLanguage = "ro";
-                }
-                break;
-        } // } // end switch.
+        int id = view.getId();
 
-        // Save now the setting:
+        if (id == R.id.radio_en && checked) {
+            MainActivity.currentLanguage = "en";
+        } else if (id == R.id.radio_it && checked) {
+            MainActivity.currentLanguage = "it";
+        } else if (id == R.id.radio_ro && checked) {
+            MainActivity.currentLanguage = "ro";
+        }
+
+        // Save the setting:
         ut.saveStringSettings(key, MainActivity.currentLanguage);
     } // end onRadioButtonClicked.
 
