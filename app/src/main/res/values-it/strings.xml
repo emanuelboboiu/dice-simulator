@@ -44,6 +44,7 @@
     <string name="checkbox_onshake_pause">Consenti il lancio a schermo bloccato (consuma più batteria)</string>
     <string name="checkbox_iswakelock">Mantieni lo schermo acceso</string>
     <string name="checkbox_haptic_feedback">Vibra durante il lancio</string>
+    <string name="checkbox_haptic_result">Comunica il risultato con vibrazioni</string>
     <string name="sorting_method">Ordinamento dei dadi</string>
     <string name="sorting_descendent">Decrescente</string>
     <string name="sorting_ascendent">Crescente</string>

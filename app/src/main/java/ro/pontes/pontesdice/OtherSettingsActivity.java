@@ -28,6 +28,9 @@ public class OtherSettingsActivity extends Activity {
         CheckBox checkHapticFeedback = findViewById(R.id.haptic_feedback_checkbox);
         checkHapticFeedback.setChecked(MainActivity.isHapticFeedback);
 
+        CheckBox checkHapticResult = findViewById(R.id.haptic_result_checkbox);
+        checkHapticResult.setChecked(MainActivity.isHapticResult);
+
         // Check the radio button depending of sorting method chosen:
         int[] sortingButtons = {R.id.radio_none, R.id.radio_ascendant, R.id.radio_descendant};
         int resID = sortingButtons[Math.max(0, Math.min(2, MainActivity.sortMethod))];
@@ -57,6 +60,9 @@ public class OtherSettingsActivity extends Activity {
         } else if (id == R.id.haptic_feedback_checkbox) {
             MainActivity.isHapticFeedback = checked;
             ut.saveBooleanSettings("isHapticFeedback", MainActivity.isHapticFeedback);
+        } else if (id == R.id.haptic_result_checkbox) {
+            MainActivity.isHapticResult = checked;
+            ut.saveBooleanSettings("isHapticResult", MainActivity.isHapticResult);
         }
     } // end the function called when the check box was clicked.
 

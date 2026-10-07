@@ -234,6 +234,9 @@ public class UsefulThings {
         // Short vibration when a new result is generated:
         MainActivity.isHapticFeedback = getBooleanSettings("isHapticFeedback", true);
 
+        // Announce every die value as a vibration pattern:
+        MainActivity.isHapticResult = getBooleanSettings("isHapticResult", false);
+
         // Sorting method:
         MainActivity.sortMethod = getIntSettings("sortMethod");
 
@@ -281,6 +284,9 @@ public class UsefulThings {
 
         // Short vibration when rolling:
         saveBooleanSettings("isHapticFeedback", true);
+
+        // Haptic result playback is optional and disabled by default:
+        saveBooleanSettings("isHapticResult", false);
 
         // For sorting method:
         saveIntSettings("sortMethod", 2);

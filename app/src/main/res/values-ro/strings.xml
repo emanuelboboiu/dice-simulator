@@ -28,6 +28,7 @@
     <string name="checkbox_onshake_pause">Aruncă și cu ecranul blocat (consumă mai multă baterie)</string>
     <string name="checkbox_iswakelock">Menținere ecran activ</string>
     <string name="checkbox_haptic_feedback">Vibrează la aruncare</string>
+    <string name="checkbox_haptic_result">Redă rezultatul prin vibrații</string>
     <string name="set_defaults">Setări implicite</string>
     <string name="set_defaults_title">Setări implicite</string>
     <string name="set_defaults_body">Vrei să resetezi toate setările?</string>

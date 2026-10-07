@@ -45,6 +45,7 @@
     <string name="checkbox_onshake_pause">Allow shaking after locking the screen (uses more battery)</string>
     <string name="checkbox_iswakelock">Keep screen awake</string>
     <string name="checkbox_haptic_feedback">Vibrate when rolling</string>
+    <string name="checkbox_haptic_result">Announce the result with vibrations</string>
     <string name="sorting_method">Dice sorting</string>
     <string name="sorting_descendent">Descendant</string>
     <string name="sorting_ascendent">Ascendant</string>

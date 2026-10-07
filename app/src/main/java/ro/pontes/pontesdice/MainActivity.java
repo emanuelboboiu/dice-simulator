@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.view.animation.OvershootInterpolator;
 
 import java.util.Random;
+import java.util.ArrayList;
 
 public class MainActivity extends Activity {
     private static final long ROLL_COOLDOWN_MS = 5_000L;
@@ -72,6 +73,7 @@ public class MainActivity extends Activity {
     public static boolean isOnShakeInPause = false;
     public static boolean isWakeLock = true;
     public static boolean isHapticFeedback = true;
+    public static boolean isHapticResult = false;
 
     public static Random rand = new Random();
     private Context c;
@@ -395,6 +397,12 @@ public class MainActivity extends Activity {
 
             ((TextView) findViewById(R.id.tvResultLabel)).setText(R.string.result_label);
             updateResultAccessibility(true);
+            long hapticDuration = playHapticResult(aDice);
+            if (hapticDuration > 0) {
+                nextRollAllowedAt = Math.max(nextRollAllowedAt,
+                        SystemClock.elapsedRealtime() + hapticDuration);
+                updateRollAvailability();
+            }
             // Play dice sounds if activated:
             if (isNumberSpoken && !isTouchExplorationEnabled()) {
                 // Let's try playing sound in a new thread:
@@ -492,7 +500,7 @@ public class MainActivity extends Activity {
                     .setDuration(280)
                     .setInterpolator(new OvershootInterpolator(1.15f))
                     .start();
-            playHapticFeedback();
+            if (!isHapticResult) playHapticFeedback();
         }
     } // end show image method.
 
@@ -505,6 +513,42 @@ public class MainActivity extends Activity {
         } else {
             vibrator.vibrate(35);
         }
+    }
+
+    private long playHapticResult(int[] dice) {
+        if (!isHapticResult) return 0;
+        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        if (vibrator == null || !vibrator.hasVibrator()) return 0;
+
+        final long boundaryDuration = 300;
+        final long boundaryGap = 160;
+        final long pipDuration = 45;
+        final long pipGap = 70;
+        ArrayList<Long> timings = new ArrayList<>();
+        timings.add(0L);
+        timings.add(boundaryDuration);
+        for (int die : dice) {
+            timings.add(boundaryGap);
+            for (int pip = 0; pip < die; pip++) {
+                timings.add(pipDuration);
+                if (pip < die - 1) timings.add(pipGap);
+            }
+            timings.add(boundaryGap);
+            timings.add(boundaryDuration);
+        }
+
+        long[] pattern = new long[timings.size()];
+        long duration = 0;
+        for (int i = 0; i < timings.size(); i++) {
+            pattern[i] = timings.get(i);
+            duration += pattern[i];
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1));
+        } else {
+            vibrator.vibrate(pattern, -1);
+        }
+        return duration;
     }
 
     private void updateResultAccessibility(boolean announce) {
