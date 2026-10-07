@@ -117,6 +117,7 @@ Cititorul de ecran continuă să citească în mod normal comenzile și informa�
   - „Mai puține zaruri”;
   - „Mai multe zaruri”;
   - „2 zaruri selectate” etc.
+- După apăsarea pe plus sau minus, TalkBack anunță automat numai noul număr de zaruri, fără ca utilizatorul să fie nevoit să caute din nou valoarea pe ecran.
 - Comutatorul vocal din bara de sus indică prin etichetă acțiunea disponibilă.
 - Numărătoarea inversă nu întrerupe utilizatorul și nu este anunțată la fiecare secundă.
 - Modul cu voci înregistrate funcționează și atunci când TalkBack este activ.
@@ -305,4 +306,3 @@ Aceste texte sunt propuneri de lucru. Pot fi scurtate sau combinate înainte de 
 14. `e4aa9a7` — Prioritize settings in the app bar.
 15. `8bc26e7` — Enlarge dice and remove luck score.
 16. `56bf41e` — Clarify history order.
-

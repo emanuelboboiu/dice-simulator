@@ -723,6 +723,10 @@ public class MainActivity extends Activity {
         iNumberOfDice = Math.max(1, Math.min(6, iNumberOfDice + change));
         new UsefulThings(getApplicationContext()).saveIntSettings("iNumberOfDice", iNumberOfDice);
         updateDiceCount();
+        if (isTouchExplorationEnabled()) {
+            findViewById(R.id.tvDiceCount)
+                    .announceForAccessibility(String.valueOf(iNumberOfDice));
+        }
     }
 
     private void updateDiceCount() {
