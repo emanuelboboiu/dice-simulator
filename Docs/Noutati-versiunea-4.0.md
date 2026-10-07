@@ -180,6 +180,9 @@ Cititorul de ecran continuă să citească în mod normal comenzile și informa�
 - Ecranele și codul vechi pentru statistici au fost eliminate.
 - Vechiul calcul al procentajului de noroc a fost eliminat complet.
 - Gestionarea sunetelor a fost simplificată și resursele audio sunt eliberate corect.
+- Cele 36 de rostiri înregistrate în română, engleză și italiană au fost normalizate la un volum uniform, fără vârfuri care să producă distorsiuni.
+- Fișierele MP3 au fost reencodate într-un format consecvent și au primit o încheiere foarte scurtă de liniște pentru redare stabilă pe versiunile Android actuale.
+- Efectul sonor al aruncării a fost ajustat pentru a păstra suficient spațiu până la nivelul maxim digital.
 - Setările și istoricul sunt păstrate local prin preferințele aplicației.
 
 ## 13. Modernizare tehnică
