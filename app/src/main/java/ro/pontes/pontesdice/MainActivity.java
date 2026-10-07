@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.GridLayout;
 import android.widget.TextView;
 import android.view.animation.OvershootInterpolator;
@@ -114,6 +115,7 @@ public class MainActivity extends Activity {
         UsefulThings.clearHistory();
         showDiceAsImages(); // to clear the images from the screen.
         ((TextView) findViewById(R.id.tvResultLabel)).setText(R.string.ready_to_roll);
+        updateResultAccessibility(true);
 
     } // end clear dice function.
 
@@ -207,6 +209,7 @@ public class MainActivity extends Activity {
         // orientation is changed.
         ((TextView) findViewById(R.id.tvResultLabel)).setText(
                 UsefulThings.lastDice[0] == null ? R.string.ready_to_roll : R.string.result_label);
+        updateResultAccessibility(false);
         updateDiceCount();
         updateWakeLock();
 
@@ -377,8 +380,9 @@ public class MainActivity extends Activity {
             fillLuckyPercentageTextView();
 
             ((TextView) findViewById(R.id.tvResultLabel)).setText(R.string.result_label);
+            updateResultAccessibility(true);
             // Play dice sounds if activated:
-            if (isNumberSpoken) {
+            if (isNumberSpoken && !isTouchExplorationEnabled()) {
                 // Let's try playing sound in a new thread:
 
                 isSpeaking = true;
@@ -451,7 +455,7 @@ public class MainActivity extends Activity {
                 int value = Integer.parseInt(s);
                 total += value;
                 DiceView die = new DiceView(this, value);
-                die.setContentDescription(getString(R.string.image) + " " + value);
+                die.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
                 params.width = size;
                 params.height = size;
@@ -486,6 +490,35 @@ public class MainActivity extends Activity {
         } else {
             vibrator.vibrate(35);
         }
+    }
+
+    private void updateResultAccessibility(boolean announce) {
+        View resultCard = findViewById(R.id.resultCard);
+        String description;
+        if (UsefulThings.lastDice[0] == null) {
+            description = getString(R.string.ready_to_roll);
+        } else {
+            int total = 0;
+            for (String value : UsefulThings.lastDice[0].split(", ")) {
+                try {
+                    total += Integer.parseInt(value);
+                } catch (NumberFormatException ignored) {
+                    // Keep the readable historic values if one cannot be parsed.
+                }
+            }
+            description = getString(R.string.roll_result_announcement,
+                    UsefulThings.lastDice[0], total);
+        }
+        resultCard.setContentDescription(description);
+        if (announce && isTouchExplorationEnabled()) {
+            resultCard.announceForAccessibility(description);
+        }
+    }
+
+    private boolean isTouchExplorationEnabled() {
+        AccessibilityManager manager = (AccessibilityManager)
+                getSystemService(Context.ACCESSIBILITY_SERVICE);
+        return manager != null && manager.isEnabled() && manager.isTouchExplorationEnabled();
     }
 
     public void decreaseDice(View view) { changeDiceCount(-1); }

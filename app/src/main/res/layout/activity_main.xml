@@ -63,19 +63,23 @@
                 android:textSize="24sp" />
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/resultCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@drawable/card_background"
             android:gravity="center"
+            android:importantForAccessibility="yes"
             android:minHeight="260dp"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="20dp"
+            android:screenReaderFocusable="true">
             <TextView
                 android:id="@+id/tvResultLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:importantForAccessibility="no"
                 android:text="@string/ready_to_roll"
                 android:textColor="@color/text_secondary"
                 android:textSize="16sp" />
@@ -85,13 +89,15 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
-                android:columnCount="3" />
+                android:columnCount="3"
+                android:importantForAccessibility="no" />
             <TextView
                 android:id="@+id/tvThrownDice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:gravity="center"
+                android:importantForAccessibility="no"
                 android:text="@string/not_thrown_yet"
                 android:textColor="@color/text_primary"
                 android:textSize="23sp"
@@ -102,6 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
                 android:gravity="center"
+                android:importantForAccessibility="no"
                 android:textColor="@color/text_secondary"
                 android:textSize="16sp"
                 android:visibility="gone" />

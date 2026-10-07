@@ -13,6 +13,7 @@
     <string name="audio_section">Sunet și voce</string>
     <string name="roll_number">Aruncarea %1$d: %2$s</string>
     <string name="total_format">Total: %1$d</string>
+    <string name="roll_result_announcement">Rezultatul aruncării: %1$s. Total: %2$d</string>
     <string name="button_history">Ultimele aruncări</string>
     <string name="button_send">Aruncă acum!</string>
     <string name="clear_dice">Șterge istoricul</string>

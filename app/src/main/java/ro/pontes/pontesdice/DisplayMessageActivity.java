@@ -1,6 +1,7 @@
 package ro.pontes.pontesdice;
 
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.widget.LinearLayout;
@@ -27,6 +28,11 @@ public class DisplayMessageActivity extends Activity {
             row.setGravity(Gravity.CENTER_VERTICAL);
             row.setPadding(dp(20), dp(16), dp(20), dp(16));
             row.setBackgroundResource(R.drawable.card_background);
+            row.setContentDescription(getString(R.string.roll_number, i + 1, roll));
+            row.setImportantForAccessibility(LinearLayout.IMPORTANT_FOR_ACCESSIBILITY_YES);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                row.setScreenReaderFocusable(true);
+            }
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             params.bottomMargin = dp(12);
@@ -36,6 +42,7 @@ public class DisplayMessageActivity extends Activity {
             index.setText(String.valueOf(i + 1));
             index.setTextColor(getResources().getColor(R.color.text_secondary));
             index.setTextSize(16);
+            index.setImportantForAccessibility(TextView.IMPORTANT_FOR_ACCESSIBILITY_NO);
             row.addView(index, new LinearLayout.LayoutParams(dp(36), LinearLayout.LayoutParams.WRAP_CONTENT));
 
             TextView result = new TextView(this);
@@ -43,7 +50,7 @@ public class DisplayMessageActivity extends Activity {
             result.setTextColor(getResources().getColor(R.color.text_primary));
             result.setTextSize(21);
             result.setGravity(Gravity.END);
-            result.setContentDescription(getString(R.string.roll_number, i + 1, roll));
+            result.setImportantForAccessibility(TextView.IMPORTANT_FOR_ACCESSIBILITY_NO);
             row.addView(result, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
         }
     }
