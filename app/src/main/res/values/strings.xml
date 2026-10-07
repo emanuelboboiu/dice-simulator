@@ -29,7 +29,13 @@
     <string name="action_settings">Audio settings</string>
     <string name="title_activity_settings">Audio Settings</string>
     <string name="check_box_dice_sound">Play dice sound</string>
-    <string name="check_box_numbers_sound">Play numbers sound</string>
+    <string name="check_box_numbers_sound">Announce the result</string>
+    <string name="voice_type">Voice type</string>
+    <string name="recorded_voice">Recorded voices</string>
+    <string name="system_voice">Phone voice</string>
+    <string name="enable_voice">Enable voice announcements</string>
+    <string name="disable_voice">Disable voice announcements</string>
+    <string name="spoken_total_format">Total %1$d</string>
     <string name="language_settings">Language settings</string>
     <string name="title_activity_language">Language Settings</string>
     <string name="title_language_settings">Language Settings</string>

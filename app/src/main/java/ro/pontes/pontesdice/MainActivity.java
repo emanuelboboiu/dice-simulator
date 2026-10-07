@@ -18,6 +18,8 @@ import android.os.SystemClock;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.os.Build;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +32,7 @@ import android.view.animation.OvershootInterpolator;
 
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends Activity {
     private static final long ROLL_COOLDOWN_MS = 5_000L;
@@ -67,6 +70,7 @@ public class MainActivity extends Activity {
     // active or not.
     public static boolean isNumberSpoken = true; // if to speak or not the dice
     // numbers.
+    public static int voiceMode = 0; // 0 means recorded voices, 1 means Android TTS.
     public static long pBDS = 10; // milliseconds to add between numbers spoken.
     public static String currentLanguage = "ro";
     public static int numberOfDiceInHistory = 7;
@@ -82,6 +86,10 @@ public class MainActivity extends Activity {
 
     // A boolean variable to know when numbers are spoken:
     public static volatile boolean isSpeaking = false;
+    private TextToSpeech textToSpeech;
+    private boolean isTtsInitializing;
+    private boolean isTtsReady;
+    private int[] pendingTtsDice;
 
     /**
      * Called when the user clicks the last dice thrown button
@@ -225,6 +233,8 @@ public class MainActivity extends Activity {
         updateDiceCount();
         updateRollAvailability();
         updateWakeLock();
+        invalidateOptionsMenu();
+        if (voiceMode == 1) ensureTextToSpeech();
 
         // To delete, just a test:
         /*
@@ -276,6 +286,15 @@ public class MainActivity extends Activity {
 
     public void onDestroy() {
         cooldownHandler.removeCallbacks(cooldownUpdater);
+        boolean ttsWasActive = pendingTtsDice != null
+                || (textToSpeech != null && textToSpeech.isSpeaking());
+        pendingTtsDice = null;
+        if (textToSpeech != null) {
+            textToSpeech.stop();
+            textToSpeech.shutdown();
+            textToSpeech = null;
+        }
+        if (ttsWasActive) isSpeaking = false;
         unregisterReceiver(mScreenOnReceiver);
         mSensorManager.unregisterListener(mShakeDetector);
         releaseLockedShakeWakeLock();
@@ -288,7 +307,21 @@ public class MainActivity extends Activity {
 
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        updateVoiceMenuItem(menu);
         return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        updateVoiceMenuItem(menu);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    private void updateVoiceMenuItem(Menu menu) {
+        MenuItem voiceItem = menu.findItem(R.id.toggle_voice);
+        if (voiceItem == null) return;
+        voiceItem.setIcon(isNumberSpoken ? R.drawable.ic_volume_on : R.drawable.ic_volume_off);
+        voiceItem.setTitle(isNumberSpoken ? R.string.disable_voice : R.string.enable_voice);
     }
 
     @Override
@@ -297,7 +330,18 @@ public class MainActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.clear_dice) {
+        if (id == R.id.toggle_voice) {
+            isNumberSpoken = !isNumberSpoken;
+            new UsefulThings(getApplicationContext())
+                    .saveBooleanSettings("isNumberSpoken", isNumberSpoken);
+            if (!isNumberSpoken && textToSpeech != null) {
+                textToSpeech.stop();
+                pendingTtsDice = null;
+                isSpeaking = false;
+                updateRollAvailability();
+            }
+            invalidateOptionsMenu();
+        } else if (id == R.id.clear_dice) {
             clearDice();
         } else if (id == R.id.action_settings) {
             goToSettings();
@@ -405,36 +449,7 @@ public class MainActivity extends Activity {
                         SystemClock.elapsedRealtime() + hapticDuration);
                 updateRollAvailability();
             }
-            // Play dice sounds if activated:
-            if (isNumberSpoken && !isTouchExplorationEnabled()) {
-                // Let's try playing sound in a new thread:
-
-                isSpeaking = true;
-                final int[] spokenDice = aDice.clone();
-                new Thread(() -> {
-                    try {
-                    try {
-                        Thread.sleep(300);
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        return;
-                    }
-                    for (int i = 0; i < spokenDice.length; i++) {
-                        if (i < spokenDice.length - 1) {
-                            OurMediaPlayer.playWait(getApplicationContext(), spokenDice[i]);
-                        } else {
-                            OurMediaPlayer.playWait(getApplicationContext(), spokenDice[i] + 6);
-                        }
-                    } // end for.
-                    } finally {
-                        isSpeaking = false;
-                        runOnUiThread(this::updateRollAvailability);
-                    }
-
-                }).start();
-
-                // End the thread for playing dice.
-            } // end say numbers if is activated.
+            startVoiceAnnouncement(aDice);
 
         } // end if is not speaking.
     } // end throw actions function.
@@ -578,9 +593,125 @@ public class MainActivity extends Activity {
                     UsefulThings.lastDice[0], total);
         }
         resultCard.setContentDescription(description);
-        if (announce && isTouchExplorationEnabled()) {
+        if (announce && isTouchExplorationEnabled()
+                && !(isNumberSpoken && voiceMode == 1)) {
             resultCard.announceForAccessibility(description);
         }
+    }
+
+    private void startVoiceAnnouncement(int[] dice) {
+        if (!isNumberSpoken) return;
+        if (voiceMode == 1) {
+            speakWithTextToSpeech(dice);
+        } else if (!isTouchExplorationEnabled()) {
+            playRecordedDice(dice);
+        }
+    }
+
+    private void playRecordedDice(int[] dice) {
+        isSpeaking = true;
+        final int[] spokenDice = dice.clone();
+        new Thread(() -> {
+            try {
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return;
+                }
+                for (int i = 0; i < spokenDice.length; i++) {
+                    OurMediaPlayer.playWait(getApplicationContext(),
+                            i < spokenDice.length - 1 ? spokenDice[i] : spokenDice[i] + 6);
+                }
+            } finally {
+                isSpeaking = false;
+                runOnUiThread(this::updateRollAvailability);
+            }
+        }).start();
+    }
+
+    private void speakWithTextToSpeech(int[] dice) {
+        pendingTtsDice = dice.clone();
+        isSpeaking = true;
+        updateRollAvailability();
+        ensureTextToSpeech();
+        if (isTtsReady) speakPendingTtsResult();
+    }
+
+    private void ensureTextToSpeech() {
+        if (textToSpeech != null || isTtsInitializing) return;
+        isTtsInitializing = true;
+        textToSpeech = new TextToSpeech(getApplicationContext(), status -> runOnUiThread(() -> {
+            isTtsInitializing = false;
+            isTtsReady = status == TextToSpeech.SUCCESS;
+            if (isTtsReady) {
+                textToSpeech.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                    @Override
+                    public void onStart(String utteranceId) { }
+
+                    @Override
+                    public void onDone(String utteranceId) { finishTtsAnnouncement(); }
+
+                    @Override
+                    public void onError(String utteranceId) { finishTtsAnnouncement(); }
+                });
+            } else if (textToSpeech != null) {
+                textToSpeech.shutdown();
+                textToSpeech = null;
+            }
+            if (pendingTtsDice != null) {
+                if (isTtsReady) speakPendingTtsResult();
+                else fallbackFromTextToSpeech();
+            }
+        }));
+    }
+
+    private void speakPendingTtsResult() {
+        if (pendingTtsDice == null || textToSpeech == null || !isTtsReady) return;
+        int[] dice = pendingTtsDice;
+        pendingTtsDice = null;
+        Locale locale = new Locale(currentLanguage);
+        int languageResult = textToSpeech.setLanguage(locale);
+        if (languageResult == TextToSpeech.LANG_MISSING_DATA
+                || languageResult == TextToSpeech.LANG_NOT_SUPPORTED) {
+            pendingTtsDice = dice;
+            fallbackFromTextToSpeech();
+            return;
+        }
+        int total = 0;
+        StringBuilder spokenText = new StringBuilder();
+        for (int i = 0; i < dice.length; i++) {
+            if (i > 0) spokenText.append(", ");
+            spokenText.append(dice[i]);
+            total += dice[i];
+        }
+        spokenText.append(". ").append(getString(R.string.spoken_total_format, total));
+        int result = textToSpeech.speak(spokenText.toString(), TextToSpeech.QUEUE_FLUSH,
+                null, "dice-" + SystemClock.elapsedRealtime());
+        if (result == TextToSpeech.ERROR) {
+            pendingTtsDice = dice;
+            fallbackFromTextToSpeech();
+        }
+    }
+
+    private void fallbackFromTextToSpeech() {
+        int[] dice = pendingTtsDice;
+        pendingTtsDice = null;
+        isSpeaking = false;
+        if (dice == null) {
+            updateRollAvailability();
+        } else if (isTouchExplorationEnabled()) {
+            View resultCard = findViewById(R.id.resultCard);
+            resultCard.announceForAccessibility(resultCard.getContentDescription());
+            updateRollAvailability();
+        } else {
+            playRecordedDice(dice);
+        }
+    }
+
+    private void finishTtsAnnouncement() {
+        isSpeaking = false;
+        runOnUiThread(this::updateRollAvailability);
     }
 
     private boolean isTouchExplorationEnabled() {

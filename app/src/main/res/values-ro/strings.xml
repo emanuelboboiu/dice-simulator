@@ -42,7 +42,13 @@
     <string name="title_language_settings">Setări de limbă</string>
     <string name="title_number_of_dice">Număr de zaruri</string>
     <string name="check_box_dice_sound">Redă sunet zaruri</string>
-    <string name="check_box_numbers_sound">Anunță vocal numerele</string>
+    <string name="check_box_numbers_sound">Anunță vocal rezultatul</string>
+    <string name="voice_type">Tipul vocii</string>
+    <string name="recorded_voice">Voci înregistrate</string>
+    <string name="system_voice">Vocea telefonului</string>
+    <string name="enable_voice">Activează anunțarea vocală</string>
+    <string name="disable_voice">Dezactivează anunțarea vocală</string>
+    <string name="spoken_total_format">Total %1$d</string>
     <string name="English">Engleză</string>
     <string name="Italian">Italiană</string>
     <string name="Romanian">Română</string>

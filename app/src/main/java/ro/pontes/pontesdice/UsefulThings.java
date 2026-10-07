@@ -212,6 +212,9 @@ public class UsefulThings {
         // Play or not the numbers as human voice:
         MainActivity.isNumberSpoken = getBooleanSettings("isNumberSpoken");
 
+        // 0 uses the bundled recordings, 1 uses Android Text to Speech.
+        MainActivity.voiceMode = getIntSettings("voiceMode") == 1 ? 1 : 0;
+
         // Charge the number of dice:
         MainActivity.iNumberOfDice = getIntSettings("iNumberOfDice");
         // Check if there is a value for iNumberOfDice already saved, otherwise
@@ -272,6 +275,7 @@ public class UsefulThings {
         // // Activate sounds for dice and number speaking:
         saveBooleanSettings("isSoundDice", true);
         saveBooleanSettings("isNumberSpoken", true);
+        saveIntSettings("voiceMode", 0);
 
         // For shake:
         saveBooleanSettings("isOnShake", true);
