@@ -526,7 +526,7 @@ public class MainActivity extends Activity {
         final long markerGap = 160;
         final long groupGap = 300;
         final long pipDuration = 45;
-        final long pipGap = 70;
+        final long pipGap = 140;
         ArrayList<Long> timings = new ArrayList<>();
         timings.add(0L);
         for (int dieIndex = 0; dieIndex < dice.length; dieIndex++) {
@@ -591,18 +591,20 @@ public class MainActivity extends Activity {
 
     private void updateRollAvailability() {
         Button rollButton = findViewById(R.id.rollButton);
+        TextView countdown = findViewById(R.id.tvRollCountdown);
         long remaining = nextRollAllowedAt - SystemClock.elapsedRealtime();
         cooldownHandler.removeCallbacks(cooldownUpdater);
         if (remaining > 0) {
             long seconds = (remaining + 999) / 1000;
             rollButton.setEnabled(false);
-            rollButton.setText(getString(R.string.roll_again_in_seconds, seconds));
+            countdown.setText(getString(R.string.cooldown_seconds_short, seconds));
+            countdown.setVisibility(View.VISIBLE);
             if (mIsResumed) {
                 long untilNextSecond = remaining - (seconds - 1) * 1000;
                 cooldownHandler.postDelayed(cooldownUpdater, Math.max(50, untilNextSecond));
             }
         } else {
-            rollButton.setText(R.string.button_send);
+            countdown.setVisibility(View.INVISIBLE);
             rollButton.setEnabled(!isSpeaking);
         }
     }

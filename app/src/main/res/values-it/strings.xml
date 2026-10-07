@@ -14,7 +14,6 @@
     <string name="total_format">Totale: %1$d</string>
     <string name="roll_result_announcement">Risultato del lancio: %1$s. Totale: %2$d</string>
     <string name="button_send">Lancia ora!</string>
-    <string name="roll_again_in_seconds">Puoi lanciare di nuovo tra %1$d s</string>
     <string name="button_history">Ultimi lanci</string>
     <string name="thrown_dice">Dadi mostrati come testo</string>
     <string name="lucky_percentage">Fortuna nei lanci recenti</string>

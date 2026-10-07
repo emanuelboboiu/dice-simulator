@@ -16,7 +16,6 @@
     <string name="roll_result_announcement">Rezultatul aruncării: %1$s. Total: %2$d</string>
     <string name="button_history">Ultimele aruncări</string>
     <string name="button_send">Aruncă acum!</string>
-    <string name="roll_again_in_seconds">Poți arunca din nou în %1$d s</string>
     <string name="clear_dice">Șterge istoricul</string>
     <string name="mnu_settings_submenu">Setări</string>
     <string name="action_settings">Setări audio</string>
