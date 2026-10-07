@@ -40,7 +40,7 @@
                 android:background="@drawable/stepper_button"
                 android:onClick="decreaseDice"
                 android:text="−"
-                android:textColor="@color/forest"
+                android:textColor="@color/control_foreground"
                 android:textSize="24sp" />
             <TextView
                 android:id="@+id/tvDiceCount"
@@ -59,7 +59,7 @@
                 android:background="@drawable/stepper_button"
                 android:onClick="increaseDice"
                 android:text="+"
-                android:textColor="@color/forest"
+                android:textColor="@color/control_foreground"
                 android:textSize="24sp" />
         </LinearLayout>
         <LinearLayout
@@ -130,8 +130,10 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="12dp"
+            android:background="@drawable/secondary_button"
             android:onClick="sendMessage"
             android:text="@string/button_history"
+            android:textColor="@color/control_foreground"
             android:textSize="16sp" />
     </LinearLayout>
 </ScrollView>

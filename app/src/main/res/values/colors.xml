@@ -9,4 +9,6 @@
     <color name="control_background">#E3EEE9</color>
     <color name="control_disabled">#EEF1EF</color>
     <color name="control_ripple">#331C624D</color>
+    <color name="control_foreground">#164F3E</color>
+    <color name="launcher_background">#155844</color>
 </resources>
