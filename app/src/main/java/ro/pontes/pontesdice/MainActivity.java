@@ -138,19 +138,6 @@ public class MainActivity extends Activity {
     // is clicked.
 
     /**
-     * Called when the user clicks the number of dice settings option in menu:
-     */
-    public void goToNumberOfDiceSettings() {
-        Intent intent = new Intent(this, NumberOfDiceActivity.class);
-        String message;
-        message = "Pontes Dice"; // without a reason, just to be something sent
-        // by the intent.
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
-    } // end function which performs when the option number of dice in menu is
-    // clicked.
-
-    /**
      * Called when the user clicks the other settings option in menu:
      */
     public void goToOtherSettings() {
@@ -293,8 +280,6 @@ public class MainActivity extends Activity {
             goToSettings();
         } else if (id == R.id.language_settings) {
             goToLanguageSettings();
-        } else if (id == R.id.number_of_dice) {
-            goToNumberOfDiceSettings();
         } else if (id == R.id.other_settings) {
             goToOtherSettings();
         } else if (id == R.id.default_settings) {

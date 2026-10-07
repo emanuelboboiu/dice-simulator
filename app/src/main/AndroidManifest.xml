@@ -42,11 +42,6 @@
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity"
             tools:ignore="UnusedAttribute" />
-        <activity
-            android:name=".NumberOfDiceActivity"
-            android:label="@string/title_number_of_dice"
-            android:parentActivityName=".MainActivity"
-            tools:ignore="UnusedAttribute" />
     </application>
 
 </manifest>
