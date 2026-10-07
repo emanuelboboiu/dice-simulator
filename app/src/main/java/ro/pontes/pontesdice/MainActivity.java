@@ -11,12 +11,16 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.os.Build;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.view.animation.OvershootInterpolator;
 
 import java.util.Random;
 
@@ -58,6 +62,7 @@ public class MainActivity extends Activity {
     // active.
     public static boolean isOnShakeInPause = false;
     public static boolean isWakeLock = true;
+    public static boolean isHapticFeedback = true;
 
     public static Random rand = new Random();
     private Context c;
@@ -361,7 +366,7 @@ public class MainActivity extends Activity {
             // hands before.
 
             // Now call the method which shows the dice as images:
-            showDiceAsImages();
+            showDiceAsImages(true);
 
             fillLastDiceTextView(); // a method created below in this class. to
             // fill the dedicated text view for dice as
@@ -423,6 +428,10 @@ public class MainActivity extends Activity {
     } // end fill lucky percentage text view.
 
     public void showDiceAsImages() {
+        showDiceAsImages(false);
+    }
+
+    private void showDiceAsImages(boolean animate) {
         GridLayout grid = findViewById(R.id.diceGrid);
         grid.removeAllViews();
         TextView totalView = findViewById(R.id.tvTotal);
@@ -453,7 +462,31 @@ public class MainActivity extends Activity {
         }
         totalView.setText(getString(R.string.total_format, total));
         totalView.setVisibility(View.VISIBLE);
+        if (animate) {
+            grid.setAlpha(0f);
+            grid.setScaleX(0.72f);
+            grid.setScaleY(0.72f);
+            grid.animate()
+                    .alpha(1f)
+                    .scaleX(1f)
+                    .scaleY(1f)
+                    .setDuration(280)
+                    .setInterpolator(new OvershootInterpolator(1.15f))
+                    .start();
+            playHapticFeedback();
+        }
     } // end show image method.
+
+    private void playHapticFeedback() {
+        if (!isHapticFeedback) return;
+        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        if (vibrator == null || !vibrator.hasVibrator()) return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createOneShot(35, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            vibrator.vibrate(35);
+        }
+    }
 
     public void decreaseDice(View view) { changeDiceCount(-1); }
 
@@ -466,7 +499,9 @@ public class MainActivity extends Activity {
     }
 
     private void updateDiceCount() {
-        ((TextView) findViewById(R.id.tvDiceCount)).setText(String.valueOf(iNumberOfDice));
+        TextView count = findViewById(R.id.tvDiceCount);
+        count.setText(String.valueOf(iNumberOfDice));
+        count.setContentDescription(getString(R.string.dice_count_value, iNumberOfDice));
         findViewById(R.id.buttonLess).setEnabled(iNumberOfDice > 1);
         findViewById(R.id.buttonMore).setEnabled(iNumberOfDice < 6);
     }

@@ -7,6 +7,8 @@
     <string name="result_label">Rezultatul aruncării</string>
     <string name="fewer_dice">Mai puține zaruri</string>
     <string name="more_dice">Mai multe zaruri</string>
+    <string name="dice_count_label">Zaruri</string>
+    <string name="dice_count_value">%1$d zaruri selectate</string>
     <string name="gesture_section">Gesturi și ecran</string>
     <string name="audio_section">Sunet și voce</string>
     <string name="roll_number">Aruncarea %1$d: %2$s</string>
@@ -23,6 +25,7 @@
     <string name="checkbox_onshake">Aruncă zarurile la scuturare</string>
     <string name="checkbox_onshake_pause">Aruncă și cu ecranul blocat (consumă mai multă baterie)</string>
     <string name="checkbox_iswakelock">Menținere ecran activ</string>
+    <string name="checkbox_haptic_feedback">Vibrează la aruncare</string>
     <string name="set_defaults">Setări implicite</string>
     <string name="set_defaults_title">Setări implicite</string>
     <string name="set_defaults_body">Vrei să resetezi toate setările?</string>

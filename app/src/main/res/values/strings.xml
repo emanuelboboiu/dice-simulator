@@ -7,6 +7,8 @@
     <string name="result_label">Your roll</string>
     <string name="fewer_dice">Fewer dice</string>
     <string name="more_dice">More dice</string>
+    <string name="dice_count_label">Dice</string>
+    <string name="dice_count_value">%1$d dice selected</string>
     <string name="gesture_section">Gestures and screen</string>
     <string name="audio_section">Sound and voice</string>
     <string name="roll_number">Roll %1$d: %2$s</string>
@@ -40,6 +42,7 @@
     <string name="checkbox_onshake">Throw dice on shake</string>
     <string name="checkbox_onshake_pause">Allow shaking after locking the screen (uses more battery)</string>
     <string name="checkbox_iswakelock">Keep screen awake</string>
+    <string name="checkbox_haptic_feedback">Vibrate when rolling</string>
     <string name="sorting_method">Dice sorting</string>
     <string name="sorting_descendent">Descendant</string>
     <string name="sorting_ascendent">Ascendant</string>

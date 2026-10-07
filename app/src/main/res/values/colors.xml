@@ -6,4 +6,7 @@
     <color name="text_primary">#19372E</color>
     <color name="text_secondary">#50665D</color>
     <color name="pip">#214C3D</color>
+    <color name="control_background">#E3EEE9</color>
+    <color name="control_disabled">#EEF1EF</color>
+    <color name="control_ripple">#331C624D</color>
 </resources>

@@ -142,6 +142,11 @@ public class UsefulThings {
         return value;
     } // end get boolean preference from SharedPreference.
 
+    public boolean getBooleanSettings(String key, boolean defaultValue) {
+        SharedPreferences settings = contextHere.getSharedPreferences(PREFS_NAME, 0);
+        return settings.getBoolean(key, defaultValue);
+    }
+
     // Save a integer value:
     public void saveIntSettings(String key, int value) {
         // We need an Editor object to make preference changes.
@@ -226,6 +231,9 @@ public class UsefulThings {
         // For keeping screen awake:
         MainActivity.isWakeLock = getBooleanSettings("isWakeLock");
 
+        // Short vibration when a new result is generated:
+        MainActivity.isHapticFeedback = getBooleanSettings("isHapticFeedback", true);
+
         // Sorting method:
         MainActivity.sortMethod = getIntSettings("sortMethod");
 
@@ -270,6 +278,9 @@ public class UsefulThings {
 
         // For keeping screen awake:
         saveBooleanSettings("isWakeLock", true);
+
+        // Short vibration when rolling:
+        saveBooleanSettings("isHapticFeedback", true);
 
         // For sorting method:
         saveIntSettings("sortMethod", 2);

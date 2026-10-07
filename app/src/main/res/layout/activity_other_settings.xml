@@ -49,6 +49,15 @@
                 android:text="@string/checkbox_iswakelock"
                 android:textColor="@color/text_primary"
                 android:textSize="17sp" />
+            <CheckBox
+                android:id="@+id/haptic_feedback_checkbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="56dp"
+                android:onClick="onCheckboxClicked"
+                android:text="@string/checkbox_haptic_feedback"
+                android:textColor="@color/text_primary"
+                android:textSize="17sp" />
         </LinearLayout>
         <TextView
             android:id="@+id/tvSortLabel"

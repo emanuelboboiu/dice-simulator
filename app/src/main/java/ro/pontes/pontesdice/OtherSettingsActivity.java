@@ -25,6 +25,9 @@ public class OtherSettingsActivity extends Activity {
         CheckBox checkIsWakeLock = (CheckBox) findViewById(R.id.iswakelock_checkbox);
         checkIsWakeLock.setChecked(MainActivity.isWakeLock);
 
+        CheckBox checkHapticFeedback = findViewById(R.id.haptic_feedback_checkbox);
+        checkHapticFeedback.setChecked(MainActivity.isHapticFeedback);
+
         // Check the radio button depending of sorting method chosen:
         int[] sortingButtons = {R.id.radio_none, R.id.radio_ascendant, R.id.radio_descendant};
         int resID = sortingButtons[Math.max(0, Math.min(2, MainActivity.sortMethod))];
@@ -51,6 +54,9 @@ public class OtherSettingsActivity extends Activity {
         } else if (id == R.id.iswakelock_checkbox) {
             MainActivity.isWakeLock = checked;
             ut.saveBooleanSettings("isWakeLock", MainActivity.isWakeLock);
+        } else if (id == R.id.haptic_feedback_checkbox) {
+            MainActivity.isHapticFeedback = checked;
+            ut.saveBooleanSettings("isHapticFeedback", MainActivity.isHapticFeedback);
         }
     } // end the function called when the check box was clicked.
 

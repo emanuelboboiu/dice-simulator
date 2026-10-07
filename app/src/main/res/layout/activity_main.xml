@@ -23,12 +23,12 @@
             android:background="@drawable/card_background"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="16dp">
+            android:padding="12dp">
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@string/number_of_dice"
+                android:text="@string/dice_count_label"
                 android:textColor="@color/text_primary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -37,8 +37,10 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:contentDescription="@string/fewer_dice"
+                android:background="@drawable/stepper_button"
                 android:onClick="decreaseDice"
                 android:text="−"
+                android:textColor="@color/forest"
                 android:textSize="24sp" />
             <TextView
                 android:id="@+id/tvDiceCount"
@@ -54,8 +56,10 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:contentDescription="@string/more_dice"
+                android:background="@drawable/stepper_button"
                 android:onClick="increaseDice"
                 android:text="+"
+                android:textColor="@color/forest"
                 android:textSize="24sp" />
         </LinearLayout>
         <LinearLayout
