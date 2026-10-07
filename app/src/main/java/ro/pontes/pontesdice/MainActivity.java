@@ -10,7 +10,10 @@ import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.PowerManager;
+import android.os.SystemClock;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.os.Build;
@@ -20,12 +23,17 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.GridLayout;
+import android.widget.Button;
 import android.widget.TextView;
 import android.view.animation.OvershootInterpolator;
 
 import java.util.Random;
 
 public class MainActivity extends Activity {
+    private static final long ROLL_COOLDOWN_MS = 5_000L;
+    private static long nextRollAllowedAt;
+    private final Handler cooldownHandler = new Handler(Looper.getMainLooper());
+    private final Runnable cooldownUpdater = this::updateRollAvailability;
     // The following fields are used for the shake detection:
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
@@ -211,6 +219,7 @@ public class MainActivity extends Activity {
                 UsefulThings.lastDice[0] == null ? R.string.ready_to_roll : R.string.result_label);
         updateResultAccessibility(false);
         updateDiceCount();
+        updateRollAvailability();
         updateWakeLock();
 
         // To delete, just a test:
@@ -231,6 +240,7 @@ public class MainActivity extends Activity {
     @Override
     public void onPause() {
         mIsResumed = false;
+        cooldownHandler.removeCallbacks(cooldownUpdater);
         updateLockedShakeState();
         super.onPause();
     }
@@ -261,6 +271,7 @@ public class MainActivity extends Activity {
     }
 
     public void onDestroy() {
+        cooldownHandler.removeCallbacks(cooldownUpdater);
         unregisterReceiver(mScreenOnReceiver);
         mSensorManager.unregisterListener(mShakeDetector);
         releaseLockedShakeWakeLock();
@@ -321,7 +332,10 @@ public class MainActivity extends Activity {
 
     public void throwActions() {
         // Throws only if there are not still spoken:
-        if (!isSpeaking) {
+        if (!isSpeaking && SystemClock.elapsedRealtime() >= nextRollAllowedAt) {
+
+            nextRollAllowedAt = SystemClock.elapsedRealtime() + ROLL_COOLDOWN_MS;
+            updateRollAvailability();
 
             int[] aDice = new int[iNumberOfDice];
 
@@ -404,6 +418,7 @@ public class MainActivity extends Activity {
                     } // end for.
                     } finally {
                         isSpeaking = false;
+                        runOnUiThread(this::updateRollAvailability);
                     }
 
                 }).start();
@@ -519,6 +534,24 @@ public class MainActivity extends Activity {
         AccessibilityManager manager = (AccessibilityManager)
                 getSystemService(Context.ACCESSIBILITY_SERVICE);
         return manager != null && manager.isEnabled() && manager.isTouchExplorationEnabled();
+    }
+
+    private void updateRollAvailability() {
+        Button rollButton = findViewById(R.id.rollButton);
+        long remaining = nextRollAllowedAt - SystemClock.elapsedRealtime();
+        cooldownHandler.removeCallbacks(cooldownUpdater);
+        if (remaining > 0) {
+            long seconds = (remaining + 999) / 1000;
+            rollButton.setEnabled(false);
+            rollButton.setText(getString(R.string.roll_again_in_seconds, seconds));
+            if (mIsResumed) {
+                long untilNextSecond = remaining - (seconds - 1) * 1000;
+                cooldownHandler.postDelayed(cooldownUpdater, Math.max(50, untilNextSecond));
+            }
+        } else {
+            rollButton.setText(R.string.button_send);
+            rollButton.setEnabled(!isSpeaking);
+        }
     }
 
     public void decreaseDice(View view) { changeDiceCount(-1); }
