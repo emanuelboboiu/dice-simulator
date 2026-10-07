@@ -186,7 +186,7 @@ Cititorul de ecran continuă să citească în mod normal comenzile și informa�
 
 - `compileSdk` și `targetSdk` au fost actualizate la API 36.
 - Proiectul folosește Java 17.
-- Versiunea minimă acceptată este Android API 23.
+- Versiunea minimă acceptată este Android API 24 (Android 7.0).
 - Namespace-ul aplicației este declarat în configurația Gradle modernă.
 - Au fost actualizate Android Gradle Plugin și Gradle Wrapper.
 - A fost eliminată permisiunea Internet, deoarece aplicația nu are nevoie de acces la rețea.
@@ -231,7 +231,7 @@ Cititorul de ecran continuă să citească în mod normal comenzile și informa�
   - setări audio;
   - șase zaruri în peisaj;
   - lipsa suprapunerilor, crashurilor și ANR-urilor.
-- Pe Pixel 10 au fost confirmate `versionName 4.0`, `versionCode 15`, `minSdk 23` și `targetSdk 36`.
+- Pe Pixel 10 au fost confirmate `versionName 4.0`, `versionCode 15` și `targetSdk 36`; înainte de finalizare, cerința minimă a fost actualizată la `minSdk 24` (Android 7.0).
 - Senzația fizică a vibrațiilor și scuturarea telefonului cu ecranul blocat necesită confirmare manuală; acestea nu pot fi evaluate complet prin capturi și comenzi ADB.
 
 ## 15. Setările implicite în versiunea 4.0
@@ -306,3 +306,4 @@ Aceste texte sunt propuneri de lucru. Pot fi scurtate sau combinate înainte de 
 14. `e4aa9a7` — Prioritize settings in the app bar.
 15. `8bc26e7` — Enlarge dice and remove luck score.
 16. `56bf41e` — Clarify history order.
+17. `3916c4f` — Finished version 4.0 (anunțarea automată a noului număr de zaruri pentru TalkBack).
