@@ -54,7 +54,7 @@
     <string name="set_defaults_body">Do you want to Reset all application settings?</string>
     <string name="exit">Exit</string>
     <string name="about">About</string>
-    <string name="app_version">Dice Simulator, version 3.2</string>
+    <string name="app_version">Dice Simulator, version 4.0</string>
     <string name="app_release_date">Version 1.0 released on Monday, July 28th, 2014</string>
     <string name="app_last_update">Updated October 7, 2026</string>
     <string name="app_creator">Programmed by Emanuel Boboiu (Manu)</string>
