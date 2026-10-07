@@ -17,6 +17,7 @@
     <string name="button_send">Throw now!</string>
     <string name="cooldown_seconds_short">%1$d s</string>
     <string name="button_history">Last throws</string>
+    <string name="history_order_hint">Newest roll first</string>
     <string name="thrown_dice">Dice shown as text</string>
     <string name="image">Die</string>
     <string name="title_activity_display_message">Last Thrown Dice</string>

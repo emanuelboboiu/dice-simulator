@@ -15,6 +15,7 @@
     <string name="total_format">Total: %1$d</string>
     <string name="roll_result_announcement">%1$s.</string>
     <string name="button_history">Ultimele aruncări</string>
+    <string name="history_order_hint">Cea mai recentă aruncare este prima</string>
     <string name="button_send">Aruncă acum!</string>
     <string name="clear_dice">Șterge istoricul</string>
     <string name="mnu_settings_submenu">Setări</string>

@@ -15,6 +15,7 @@
     <string name="roll_result_announcement">%1$s.</string>
     <string name="button_send">Lancia ora!</string>
     <string name="button_history">Ultimi lanci</string>
+    <string name="history_order_hint">Il lancio più recente è il primo</string>
     <string name="thrown_dice">Dadi mostrati come testo</string>
     <string name="image">Dado</string>
     <string name="title_activity_display_message">Ultimi dadi lanciati</string>

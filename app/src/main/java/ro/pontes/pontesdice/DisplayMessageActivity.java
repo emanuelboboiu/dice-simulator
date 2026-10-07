@@ -21,6 +21,15 @@ public class DisplayMessageActivity extends Activity {
             list.addView(empty);
             return;
         }
+        TextView orderHint = new TextView(this);
+        orderHint.setText(R.string.history_order_hint);
+        orderHint.setTextColor(getResources().getColor(R.color.text_secondary));
+        orderHint.setTextSize(15);
+        LinearLayout.LayoutParams hintParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        hintParams.bottomMargin = dp(16);
+        list.addView(orderHint, hintParams);
+
         for (int i = 0; i < UsefulThings.lastDice.length; i++) {
             String roll = UsefulThings.lastDice[i];
             if (roll == null) break;
