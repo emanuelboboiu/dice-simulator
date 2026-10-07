@@ -13,9 +13,9 @@ public class NumberOfDiceActivity extends Activity {
         setContentView(R.layout.activity_number_of_dice);
 
         // Check the radio button depending of number of dice chosen:
-        String rb = "radio_" + MainActivity.iNumberOfDice;
-        int resID = getResources().getIdentifier(rb, "id",
-                "ro.pontes.pontesdice");
+        int[] buttons = {R.id.radio_1, R.id.radio_2, R.id.radio_3,
+                R.id.radio_4, R.id.radio_5, R.id.radio_6};
+        int resID = buttons[Math.max(1, Math.min(6, MainActivity.iNumberOfDice)) - 1];
         RadioButton radioButton = (RadioButton) findViewById(resID);
         radioButton.setChecked(true);
 

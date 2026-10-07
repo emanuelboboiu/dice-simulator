@@ -13,9 +13,8 @@ public class LanguageActivity extends Activity {
         setContentView(R.layout.activity_language);
 
         // Check the radio button depending of language for dice voice chosen:
-        String rb = "radio_" + MainActivity.currentLanguage;
-        int resID = getResources().getIdentifier(rb, "id",
-                "ro.pontes.pontesdice");
+        int resID = "it".equals(MainActivity.currentLanguage) ? R.id.radio_it :
+                "ro".equals(MainActivity.currentLanguage) ? R.id.radio_ro : R.id.radio_en;
         RadioButton radioButton = (RadioButton) findViewById(resID);
         radioButton.setChecked(true);
 

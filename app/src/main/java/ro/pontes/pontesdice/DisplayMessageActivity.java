@@ -1,44 +1,54 @@
 package ro.pontes.pontesdice;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class DisplayMessageActivity extends Activity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
-        // Get the message from the intent
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-        message.length();
-
-        // Set the corresponding XML as the activity layout
         setContentView(R.layout.activity_display_message);
-
+        LinearLayout list = findViewById(R.id.historyList);
+        if (UsefulThings.lastDice == null || UsefulThings.lastDice[0] == null) {
+            TextView empty = new TextView(this);
+            empty.setText(R.string.not_thrown_yet);
+            empty.setTextColor(getResources().getColor(R.color.text_secondary));
+            empty.setTextSize(18);
+            list.addView(empty);
+            return;
+        }
         for (int i = 0; i < UsefulThings.lastDice.length; i++) {
-            if (UsefulThings.lastDice[i] != null) {
-                String tvString = "TextView" + (i + 1);
-                int resID = getResources().getIdentifier(tvString, "id",
-                        "ro.pontes.pontesdice");
-                TextView textView = (TextView) findViewById(resID);
-                textView.setText(UsefulThings.lastDice[i]);
-            } else {
-                break; // it means there are not more values in the array.
-            }
-        } // end for.
+            String roll = UsefulThings.lastDice[i];
+            if (roll == null) break;
+            LinearLayout row = new LinearLayout(this);
+            row.setGravity(Gravity.CENTER_VERTICAL);
+            row.setPadding(dp(20), dp(16), dp(20), dp(16));
+            row.setBackgroundResource(R.drawable.card_background);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.bottomMargin = dp(12);
+            list.addView(row, params);
 
-        // Try a simple message:
-        /*
-         * String greetingText = "Hello Manu!" Toast tempMessage =
-         * Toast.makeText(getApplicationContext(), greetingText,
-         * Toast.LENGTH_LONG); tempMessage.show(); // end try a simple message.
-         */
+            TextView index = new TextView(this);
+            index.setText(String.valueOf(i + 1));
+            index.setTextColor(getResources().getColor(R.color.text_secondary));
+            index.setTextSize(16);
+            row.addView(index, new LinearLayout.LayoutParams(dp(36), LinearLayout.LayoutParams.WRAP_CONTENT));
 
-    } // end on create option.
+            TextView result = new TextView(this);
+            result.setText(roll);
+            result.setTextColor(getResources().getColor(R.color.text_primary));
+            result.setTextSize(21);
+            result.setGravity(Gravity.END);
+            result.setContentDescription(getString(R.string.roll_number, i + 1, roll));
+            row.addView(result, new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+        }
+    }
 
-} // end display history activity.
+    private int dp(int value) {
+        return (int) (value * getResources().getDisplayMetrics().density + 0.5f);
+    }
+}

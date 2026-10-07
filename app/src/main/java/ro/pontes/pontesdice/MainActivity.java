@@ -2,21 +2,22 @@ package ro.pontes.pontesdice;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
+import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.GridLayout;
 import android.widget.TextView;
 
-import java.util.Arrays;
 import java.util.Random;
 
 public class MainActivity extends Activity {
@@ -24,12 +25,23 @@ public class MainActivity extends Activity {
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private ShakeDetector mShakeDetector;
+    private PowerManager mPowerManager;
+    private PowerManager.WakeLock mLockedShakeWakeLock;
+    private boolean mIsResumed;
+    private final BroadcastReceiver mScreenOnReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (!mIsResumed) {
+                mSensorManager.unregisterListener(mShakeDetector);
+                releaseLockedShakeWakeLock();
+            }
+        }
+    };
     // End fields declaration for shake detector.
 
-    public int nrOfThrows = 0;
     public final static String EXTRA_MESSAGE = "ro.pontes.pontesdice.MESSAGE";
     public static String message = ""; // here will be the dice as text.
-    public static UsefulThings ut;
+    private UsefulThings ut;
 
     // Settings variables:
     public static int iNumberOfDice = 2;
@@ -47,12 +59,11 @@ public class MainActivity extends Activity {
     public static boolean isOnShakeInPause = false;
     public static boolean isWakeLock = true;
 
-    public static OurSoundPlayer player = new OurSoundPlayer();
     public static Random rand = new Random();
-    public static Context c;
+    private Context c;
 
     // A boolean variable to know when numbers are spoken:
-    public static boolean isSpeaking = false;
+    public static volatile boolean isSpeaking = false;
 
     /**
      * Called when the user clicks the last dice thrown button
@@ -85,7 +96,7 @@ public class MainActivity extends Activity {
      * Called when the user clicks the clear dice option in menu:
      */
     public void clearDice() {
-        String tempString = getString(R.string.thrown_dice);
+        String tempString = getString(R.string.not_thrown_yet);
         TextView textView = findViewById(R.id.tvThrownDice);
         textView.setText(tempString);
 
@@ -95,8 +106,9 @@ public class MainActivity extends Activity {
 
         // Let's empty the array lastDice from UsefulThings:
 
-        Arrays.fill(UsefulThings.lastDice, null);
+        UsefulThings.clearHistory();
         showDiceAsImages(); // to clear the images from the screen.
+        ((TextView) findViewById(R.id.tvResultLabel)).setText(R.string.ready_to_roll);
 
     } // end clear dice function.
 
@@ -164,17 +176,21 @@ public class MainActivity extends Activity {
         UsefulThings.initialiseThings();
 
         ut.chargeSettings();
+        updateDiceCount();
 
         OurSoundPlayer.initSounds(c);
 
         // To keep screen awake:
-        if (MainActivity.isWakeLock) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        } // end wake lock.
+        updateWakeLock();
 
         // // ShakeDetector initialisation
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mPowerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        mLockedShakeWakeLock = mPowerManager.newWakeLock(
+                PowerManager.PARTIAL_WAKE_LOCK, "PontesDice:lockedShake");
+        mLockedShakeWakeLock.setReferenceCounted(false);
+        registerReceiver(mScreenOnReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
         mShakeDetector = new ShakeDetector();
         /*
          * method you would use to setup whatever you want done once the
@@ -188,6 +204,8 @@ public class MainActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
+        mIsResumed = true;
+        releaseLockedShakeWakeLock();
 
         fillLastDiceTextView(); // to refill onResume, orientation change or
         // reappear.
@@ -195,6 +213,10 @@ public class MainActivity extends Activity {
         // or reappear.
         showDiceAsImages(); // redraw the images at the restart like when
         // orientation is changed.
+        ((TextView) findViewById(R.id.tvResultLabel)).setText(
+                UsefulThings.lastDice[0] == null ? R.string.ready_to_roll : R.string.result_label);
+        updateDiceCount();
+        updateWakeLock();
 
         // To delete, just a test:
         /*
@@ -202,31 +224,52 @@ public class MainActivity extends Activity {
          * textView.setText(UsefulThings.curLocale);
          */
 
-        if (isOnShake) {
+        if (isOnShake && mAccelerometer != null) {
             // Add the following line to register the Session Manager Listener
             // onResume
             mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);
+        } else {
+            mSensorManager.unregisterListener(mShakeDetector);
         }
     } // end onResume method.
 
     @Override
     public void onPause() {
-        // Add here what you want to happens on pause
-
-        if (nrOfThrows > 0) {
-            Statistics stats = new Statistics();
-            stats.postStats("7", nrOfThrows);
-            nrOfThrows = 0;
-        }
-        if (isOnShake && !isOnShakeInPause) {
-            // Add the following line to unregister the Sensor Manager onPause
-            mSensorManager.unregisterListener(mShakeDetector);
-        }
+        mIsResumed = false;
+        updateLockedShakeState();
         super.onPause();
     }
 
+    @Override
+    protected void onStop() {
+        // Some devices report the screen as off only after onPause.
+        updateLockedShakeState();
+        super.onStop();
+    }
+
+    private void updateLockedShakeState() {
+        if (isOnShake && isOnShakeInPause && mAccelerometer != null
+                && !mPowerManager.isInteractive()) {
+            mSensorManager.registerListener(mShakeDetector, mAccelerometer,
+                    SensorManager.SENSOR_DELAY_UI);
+            if (!mLockedShakeWakeLock.isHeld()) mLockedShakeWakeLock.acquire();
+        } else {
+            mSensorManager.unregisterListener(mShakeDetector);
+            releaseLockedShakeWakeLock();
+        }
+    }
+
+    private void releaseLockedShakeWakeLock() {
+        if (mLockedShakeWakeLock != null && mLockedShakeWakeLock.isHeld()) {
+            mLockedShakeWakeLock.release();
+        }
+    }
+
     public void onDestroy() {
+        unregisterReceiver(mScreenOnReceiver);
         mSensorManager.unregisterListener(mShakeDetector);
+        releaseLockedShakeWakeLock();
+        OurSoundPlayer.release();
         super.onDestroy();
     } // end onDestroy() method.
 
@@ -272,7 +315,7 @@ public class MainActivity extends Activity {
             this.finish();
 
         } // end if about item was chosen.
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     public void handleShakeEvent(int count) {
@@ -287,15 +330,10 @@ public class MainActivity extends Activity {
         // Throws only if there are not still spoken:
         if (!isSpeaking) {
 
-            nrOfThrows++;
-
             int[] aDice = new int[iNumberOfDice];
 
             // We play the throw dice sound:
-            if (isSoundDice) {
-                new Thread(() -> OurSoundPlayer.playSound(getApplicationContext(), 1)).start();
-                // end thread to play the throwing sound.
-            } // end if is activated the sound player.
+            if (isSoundDice) OurSoundPlayer.playSound();
 
             // We need also a Random object, it is instanced at the beginning of
             // the class.:
@@ -311,10 +349,10 @@ public class MainActivity extends Activity {
             // Sort the dice if is set 1 or 2 for sortMethod:
             if (sortMethod == 1) {
                 // Ascendant sorting:
-                Arrays.sort(aDice);
+                java.util.Arrays.sort(aDice);
             } else if (sortMethod == 2) {
                 // Descendant sorting:
-                Arrays.sort(aDice);
+                java.util.Arrays.sort(aDice);
                 // Now let's reverse the order:
                 for (int i = 0; i < aDice.length / 2; i++) {
                     int temp;
@@ -348,27 +386,31 @@ public class MainActivity extends Activity {
             UsefulThings.calculateAverageOfLastHandsOfDice();
             fillLuckyPercentageTextView();
 
+            ((TextView) findViewById(R.id.tvResultLabel)).setText(R.string.result_label);
             // Play dice sounds if activated:
             if (isNumberSpoken) {
                 // Let's try playing sound in a new thread:
 
+                isSpeaking = true;
+                final int[] spokenDice = aDice.clone();
                 new Thread(() -> {
-
-                    isSpeaking = true;
+                    try {
                     try {
                         Thread.sleep(300);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        Thread.currentThread().interrupt();
+                        return;
                     }
-                    String[] aTempDice = UsefulThings.lastDice[0].split(", ");
-                    for (int i = 0; i < aTempDice.length; i++) {
-                        if (i < aTempDice.length - 1) {
-                            OurMediaPlayer.playWait(getApplicationContext(), Integer.parseInt(aTempDice[i]));
+                    for (int i = 0; i < spokenDice.length; i++) {
+                        if (i < spokenDice.length - 1) {
+                            OurMediaPlayer.playWait(getApplicationContext(), spokenDice[i]);
                         } else {
-                            OurMediaPlayer.playWait(getApplicationContext(), Integer.parseInt(aTempDice[i]) + 6);
+                            OurMediaPlayer.playWait(getApplicationContext(), spokenDice[i] + 6);
                         }
                     } // end for.
-                    isSpeaking = false;
+                    } finally {
+                        isSpeaking = false;
+                    }
 
                 }).start();
 
@@ -380,51 +422,73 @@ public class MainActivity extends Activity {
 
     // Methods for onResume method, and other shows in application:
     public void fillLastDiceTextView() {
-        // If there is a thrown dice, let's refill the text view:
-        if (UsefulThings.lastDice[0] != null) {
-            TextView textView = findViewById(R.id.tvThrownDice);
-            textView.setText(UsefulThings.lastDice[0]);
-        }
+        TextView textView = findViewById(R.id.tvThrownDice);
+        textView.setText(UsefulThings.lastDice[0] == null ? getString(R.string.not_thrown_yet) : UsefulThings.lastDice[0]);
     } // end fillLastDiceTextView.
 
     // Fill also the luck percentage text view:
     public void fillLuckyPercentageTextView() {
         if (UsefulThings.lastDice[0] != null) {
             // Refill also the lucky percentage:
-            String tempString = getString(R.string.lucky_calculated);
             TextView textView2 = findViewById(R.id.tvLuckyPercentage);
-            textView2.setText(tempString + UsefulThings.iGeneralAverage + "%");
+            textView2.setText(getString(R.string.luck_format, UsefulThings.iGeneralAverage));
+        } else {
+            ((TextView) findViewById(R.id.tvLuckyPercentage)).setText(R.string.lucky_percentage);
         }
     } // end fill lucky percentage text view.
 
     public void showDiceAsImages() {
-
-        // Show the images on the screen in a linear layout llDiceImages:
-        // Find the LinearLayout:
-        LinearLayout ll = findViewById(R.id.llDiceImages);
-        // Clear if there is something there:
-        if (ll.getChildCount() > 0) ll.removeAllViews();
-
-        // Just if there is a last hand of dice in UsefulThings.lastDice[0]:
-        if (UsefulThings.lastDice[0] != null) {
-            // Create an array with the last hand of dice, split from lastDice
-            // static field of the usefulThingsClass.
-            String[] aDice;
-            aDice = UsefulThings.lastDice[0].split(", ");
-
-            for (String s : aDice) {
-                ImageView mImage = new ImageView(c); // c is actual context.
-                String uri = "@drawable/d" + s; // the name of the image
-                // dynamically.
-                int imageResource = getResources().getIdentifier(uri, null, getPackageName());
-                @SuppressWarnings("deprecation") Drawable res = getResources().getDrawable(imageResource);
-                mImage.setImageDrawable(res);
-                String tempString = getString(R.string.image);
-                mImage.setContentDescription(tempString + " " + s);
-                ll.addView(mImage);
-            } // end if there is a last hand of dice to show.
-        } // end for.
-
+        GridLayout grid = findViewById(R.id.diceGrid);
+        grid.removeAllViews();
+        TextView totalView = findViewById(R.id.tvTotal);
+        if (UsefulThings.lastDice[0] == null) {
+            totalView.setVisibility(View.GONE);
+            return;
+        }
+        int size = (int) (Math.min(104, (getResources().getDisplayMetrics().widthPixels /
+                getResources().getDisplayMetrics().density - 96) / 3) * getResources().getDisplayMetrics().density);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            int landscapeSize = UsefulThings.lastDice[0].split(", ").length > 3 ? 68 : 90;
+            size = Math.min(size, (int) (landscapeSize * getResources().getDisplayMetrics().density));
+        }
+        int total = 0;
+        for (String s : UsefulThings.lastDice[0].split(", ")) {
+            try {
+                int value = Integer.parseInt(s);
+                total += value;
+                DiceView die = new DiceView(this, value);
+                die.setContentDescription(getString(R.string.image) + " " + value);
+                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+                params.width = size;
+                params.height = size;
+                grid.addView(die, params);
+            } catch (NumberFormatException ignored) {
+                // Ignore an invalid historic value.
+            }
+        }
+        totalView.setText(getString(R.string.total_format, total));
+        totalView.setVisibility(View.VISIBLE);
     } // end show image method.
+
+    public void decreaseDice(View view) { changeDiceCount(-1); }
+
+    public void increaseDice(View view) { changeDiceCount(1); }
+
+    private void changeDiceCount(int change) {
+        iNumberOfDice = Math.max(1, Math.min(6, iNumberOfDice + change));
+        new UsefulThings(getApplicationContext()).saveIntSettings("iNumberOfDice", iNumberOfDice);
+        updateDiceCount();
+    }
+
+    private void updateDiceCount() {
+        ((TextView) findViewById(R.id.tvDiceCount)).setText(String.valueOf(iNumberOfDice));
+        findViewById(R.id.buttonLess).setEnabled(iNumberOfDice > 1);
+        findViewById(R.id.buttonMore).setEnabled(iNumberOfDice < 6);
+    }
+
+    private void updateWakeLock() {
+        if (isWakeLock) getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        else getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
 
 } // end main activity class.

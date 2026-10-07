@@ -2,6 +2,8 @@ package ro.pontes.pontesdice;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import java.util.Arrays;
+import java.util.Locale;
 
 public class UsefulThings {
 
@@ -12,10 +14,12 @@ public class UsefulThings {
     public static int iGeneralAverage = 0;
     public static String curLocale = "";
 
-    protected static Context contextHere;
+    private final Context contextHere;
+    private static SharedPreferences historyPreferences;
 
     public UsefulThings(Context context) {
-        contextHere = context;
+        contextHere = context.getApplicationContext();
+        historyPreferences = contextHere.getSharedPreferences(PREFS_NAME, 0);
     }
 
     public static void initialiseThings() {
@@ -23,6 +27,10 @@ public class UsefulThings {
         // Resize the array for last dice:
         if (lastDice == null) {
             lastDice = new String[MainActivity.numberOfDiceInHistory];
+            for (int i = 0; i < lastDice.length; i++) {
+                lastDice[i] = historyPreferences.getString("history_" + i, null);
+            }
+            calculateAverageOfLastHandsOfDice();
         }
 
     } // end initialise things function.
@@ -36,7 +44,23 @@ public class UsefulThings {
         } // end for.
         // Add at index 0 last message, last dice thrown:
         lastDice[0] = message;
+        saveHistory();
     } // end add last dice into history..
+
+    public static void clearHistory() {
+        Arrays.fill(lastDice, null);
+        iGeneralAverage = 0;
+        saveHistory();
+    }
+
+    private static void saveHistory() {
+        SharedPreferences.Editor editor = historyPreferences.edit();
+        for (int i = 0; i < lastDice.length; i++) {
+            if (lastDice[i] == null) editor.remove("history_" + i);
+            else editor.putString("history_" + i, lastDice[i]);
+        }
+        editor.apply();
+    }
 
     // A function to calculate and show the lucky:
     public static void calculateAverageOfLastHandsOfDice() {
@@ -76,6 +100,10 @@ public class UsefulThings {
         } // end for.
 
         // Final result:
+        if (it == 0) {
+            iGeneralAverage = 0;
+            return;
+        }
         generalAverage = generalAverage / it;
 
         // Make it as percentage:
@@ -203,7 +231,7 @@ public class UsefulThings {
 
         // Get the language for currentLanguage key in SharedPrefferences:
         String tempCurLocale = getStringSettings("currentLanguage");
-        if (tempCurLocale.equals("en") || tempCurLocale.equals("it")
+        if ("en".equals(tempCurLocale) || "it".equals(tempCurLocale)
                 || tempCurLocale.equals("ro")) {
             // If there is a saved value which exists also in the raw folder:
             MainActivity.currentLanguage = tempCurLocale;
@@ -218,10 +246,7 @@ public class UsefulThings {
 
         // Numbers peaking language:
         // Get the system current locale: // Get the locale:
-        curLocale = contextHere.getResources().getConfiguration().locale
-                .getDisplayName();
-        curLocale = curLocale.substring(0, 2);
-        curLocale = curLocale.toLowerCase();
+        curLocale = contextHere.getResources().getConfiguration().locale.getLanguage().toLowerCase(Locale.ROOT);
         if (curLocale.equals("en") || curLocale.equals("it")
                 || curLocale.equals("ro")) {
             saveStringSettings("currentLanguage", curLocale);

@@ -37,7 +37,6 @@
     <issue id="ExportedService" severity="ignore" />
     <issue id="ExtraText" severity="ignore" />
     <issue id="ExtraTranslation" severity="ignore" />
-    <issue id="FloatMath" severity="ignore" />
     <issue id="GetInstance" severity="ignore" />
     <issue id="GifUsage" severity="ignore" />
     <issue id="GradleCompatible" severity="ignore" />
@@ -66,7 +65,6 @@
     <issue id="IconXmlAndPng" severity="ignore" />
     <issue id="IllegalResourceRef" severity="ignore" />
     <issue id="ImpliedQuantity" severity="ignore" />
-    <issue id="ImproperProjectLevelStatement" severity="ignore" />
     <issue id="InOrMmUsage" severity="ignore" />
     <issue id="IncludeLayoutParam" severity="ignore" />
     <issue id="InconsistentArrays" severity="ignore" />
@@ -88,7 +86,6 @@
     <issue id="ManifestTypo" severity="ignore" />
     <issue id="MenuTitle" severity="ignore" />
     <issue id="MergeRootFrame" severity="ignore" />
-    <issue id="MisplacedStatement" severity="ignore" />
     <issue id="MissingApplicationIcon" severity="ignore" />
     <issue id="MissingId" severity="ignore" />
     <issue id="MissingPrefix" severity="ignore" />

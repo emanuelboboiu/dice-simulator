@@ -10,8 +10,13 @@ android {
         applicationId "ro.pontes.pontesdice"
         minSdk 23
         targetSdk 36
-        versionCode 13
-        versionName "3.1"
+        versionCode 14
+        versionName "3.2"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     buildTypes {

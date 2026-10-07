@@ -26,11 +26,8 @@ public class OtherSettingsActivity extends Activity {
         checkIsWakeLock.setChecked(MainActivity.isWakeLock);
 
         // Check the radio button depending of sorting method chosen:
-        String[] aSorting = new String[]{"radio_none", "radio_ascendant",
-                "radio_descendant"};
-        int resID = getResources()
-                .getIdentifier(aSorting[MainActivity.sortMethod], "id",
-                        "ro.pontes.pontesdice");
+        int[] sortingButtons = {R.id.radio_none, R.id.radio_ascendant, R.id.radio_descendant};
+        int resID = sortingButtons[Math.max(0, Math.min(2, MainActivity.sortMethod))];
         RadioButton radioButton = (RadioButton) findViewById(resID);
         radioButton.setChecked(true);
 

@@ -1,0 +1,9 @@
+<resources>
+    <color name="screen_background">#F3F6F3</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="forest">#1C624D</color>
+    <color name="forest_dark">#124A39</color>
+    <color name="text_primary">#19372E</color>
+    <color name="text_secondary">#50665D</color>
+    <color name="pip">#214C3D</color>
+</resources>
