@@ -12,7 +12,7 @@
     <string name="audio_section">Suono e voce</string>
     <string name="roll_number">Lancio %1$d: %2$s</string>
     <string name="total_format">Totale: %1$d</string>
-    <string name="roll_result_announcement">Risultato del lancio: %1$s. Totale: %2$d</string>
+    <string name="roll_result_announcement">%1$s.</string>
     <string name="button_send">Lancia ora!</string>
     <string name="button_history">Ultimi lanci</string>
     <string name="thrown_dice">Dadi mostrati come testo</string>
@@ -33,7 +33,6 @@
     <string name="system_voice">Voce del telefono</string>
     <string name="enable_voice">Attiva gli annunci vocali</string>
     <string name="disable_voice">Disattiva gli annunci vocali</string>
-    <string name="spoken_total_format">Totale %1$d</string>
     <string name="language_settings">Impostazioni lingua</string>
     <string name="title_activity_language">Impostazioni lingua</string>
     <string name="title_language_settings">Impostazioni lingua</string>

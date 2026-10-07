@@ -234,7 +234,7 @@ public class MainActivity extends Activity {
         updateRollAvailability();
         updateWakeLock();
         invalidateOptionsMenu();
-        if (voiceMode == 1) ensureTextToSpeech();
+        if (voiceMode == 1 && !isTouchExplorationEnabled()) ensureTextToSpeech();
 
         // To delete, just a test:
         /*
@@ -581,30 +581,22 @@ public class MainActivity extends Activity {
         if (UsefulThings.lastDice[0] == null) {
             description = getString(R.string.ready_to_roll);
         } else {
-            int total = 0;
-            for (String value : UsefulThings.lastDice[0].split(", ")) {
-                try {
-                    total += Integer.parseInt(value);
-                } catch (NumberFormatException ignored) {
-                    // Keep the readable historic values if one cannot be parsed.
-                }
-            }
             description = getString(R.string.roll_result_announcement,
-                    UsefulThings.lastDice[0], total);
+                    UsefulThings.lastDice[0]);
         }
         resultCard.setContentDescription(description);
-        if (announce && isTouchExplorationEnabled()
-                && !(isNumberSpoken && voiceMode == 1)) {
+        if (announce && isNumberSpoken && voiceMode == 1
+                && isTouchExplorationEnabled()) {
             resultCard.announceForAccessibility(description);
         }
     }
 
     private void startVoiceAnnouncement(int[] dice) {
         if (!isNumberSpoken) return;
-        if (voiceMode == 1) {
-            speakWithTextToSpeech(dice);
-        } else if (!isTouchExplorationEnabled()) {
+        if (voiceMode == 0) {
             playRecordedDice(dice);
+        } else if (!isTouchExplorationEnabled()) {
+            speakWithTextToSpeech(dice);
         }
     }
 
@@ -678,14 +670,12 @@ public class MainActivity extends Activity {
             fallbackFromTextToSpeech();
             return;
         }
-        int total = 0;
         StringBuilder spokenText = new StringBuilder();
         for (int i = 0; i < dice.length; i++) {
             if (i > 0) spokenText.append(", ");
             spokenText.append(dice[i]);
-            total += dice[i];
         }
-        spokenText.append(". ").append(getString(R.string.spoken_total_format, total));
+        spokenText.append('.');
         int result = textToSpeech.speak(spokenText.toString(), TextToSpeech.QUEUE_FLUSH,
                 null, "dice-" + SystemClock.elapsedRealtime());
         if (result == TextToSpeech.ERROR) {
