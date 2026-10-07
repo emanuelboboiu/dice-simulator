@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.res.Configuration;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.media.AudioAttributes;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends Activity {
     private static final long ROLL_COOLDOWN_MS = 5_000L;
+    private static final long HAPTIC_RESULT_START_DELAY_MS = 350L;
     private static long nextRollAllowedAt;
     private final Handler cooldownHandler = new Handler(Looper.getMainLooper());
     private final Runnable cooldownUpdater = this::updateRollAvailability;
@@ -520,21 +522,22 @@ public class MainActivity extends Activity {
         Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         if (vibrator == null || !vibrator.hasVibrator()) return 0;
 
-        final long boundaryDuration = 300;
-        final long boundaryGap = 160;
+        final long markerDuration = 300;
+        final long markerGap = 160;
+        final long groupGap = 300;
         final long pipDuration = 45;
         final long pipGap = 70;
         ArrayList<Long> timings = new ArrayList<>();
         timings.add(0L);
-        timings.add(boundaryDuration);
-        for (int die : dice) {
-            timings.add(boundaryGap);
+        for (int dieIndex = 0; dieIndex < dice.length; dieIndex++) {
+            if (dieIndex > 0) timings.add(groupGap);
+            timings.add(markerDuration);
+            timings.add(markerGap);
+            int die = dice[dieIndex];
             for (int pip = 0; pip < die; pip++) {
                 timings.add(pipDuration);
                 if (pip < die - 1) timings.add(pipGap);
             }
-            timings.add(boundaryGap);
-            timings.add(boundaryDuration);
         }
 
         long[] pattern = new long[timings.size()];
@@ -543,12 +546,18 @@ public class MainActivity extends Activity {
             pattern[i] = timings.get(i);
             duration += pattern[i];
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1));
-        } else {
-            vibrator.vibrate(pattern, -1);
-        }
-        return duration;
+        cooldownHandler.postDelayed(() -> {
+            AudioAttributes attributes = new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_ASSISTANCE_ACCESSIBILITY)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(VibrationEffect.createWaveform(pattern, -1), attributes);
+            } else {
+                vibrator.vibrate(pattern, -1, attributes);
+            }
+        }, HAPTIC_RESULT_START_DELAY_MS);
+        return HAPTIC_RESULT_START_DELAY_MS + duration;
     }
 
     private void updateResultAccessibility(boolean announce) {
