@@ -33,9 +33,6 @@
     <string name="set_defaults_body">Vrei să resetezi toate setările?</string>
     <string name="exit">Ieșire</string>
     <string name="thrown_dice">Afișate ca text</string>
-    <string name="lucky_percentage">Procentaj noroc</string>
-    <string name="lucky_calculated">"Noroc: "</string>
-    <string name="luck_format">Noroc: %1$d%%</string>
     <string name="title_activity_display_message">Ultimele zaruri aruncate</string>
     <string name="not_thrown_yet">Nearuncat încă</string>
     <string name="title_activity_settings">Setări audio</string>

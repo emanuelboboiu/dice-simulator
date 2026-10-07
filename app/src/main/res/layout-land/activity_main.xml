@@ -100,15 +100,6 @@
                 android:text="@string/button_history"
                 android:textColor="@color/control_foreground"
                 android:textSize="15sp" />
-            <TextView
-                android:id="@+id/tvLuckyPercentage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:text="@string/lucky_percentage"
-                android:textColor="@color/text_secondary"
-                android:textSize="14sp" />
         </LinearLayout>
     </ScrollView>
 

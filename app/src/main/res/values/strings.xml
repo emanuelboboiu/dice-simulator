@@ -18,9 +18,6 @@
     <string name="cooldown_seconds_short">%1$d s</string>
     <string name="button_history">Last throws</string>
     <string name="thrown_dice">Dice shown as text</string>
-    <string name="lucky_percentage">Luck over recent rolls</string>
-    <string name="lucky_calculated">"Luck: "</string>
-    <string name="luck_format">Luck: %1$d%%</string>
     <string name="image">Die</string>
     <string name="title_activity_display_message">Last Thrown Dice</string>
     <string name="not_thrown_yet">Not thrown yet</string>

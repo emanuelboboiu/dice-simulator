@@ -126,10 +126,6 @@ public class MainActivity extends Activity {
         TextView textView = findViewById(R.id.tvThrownDice);
         textView.setText(tempString);
 
-        tempString = getString(R.string.lucky_percentage);
-        TextView textView2 = findViewById(R.id.tvLuckyPercentage);
-        textView2.setText(tempString);
-
         // Let's empty the array lastDice from UsefulThings:
 
         UsefulThings.clearHistory();
@@ -223,8 +219,6 @@ public class MainActivity extends Activity {
 
         fillLastDiceTextView(); // to refill onResume, orientation change or
         // reappear.
-        fillLuckyPercentageTextView(); // to refill onResume, orientation change
-        // or reappear.
         showDiceAsImages(); // redraw the images at the restart like when
         // orientation is changed.
         ((TextView) findViewById(R.id.tvResultLabel)).setText(
@@ -437,10 +431,6 @@ public class MainActivity extends Activity {
             // fill the dedicated text view for dice as
             // text.
 
-            // Calculate and fill the text view with the luck percentage:
-            UsefulThings.calculateAverageOfLastHandsOfDice();
-            fillLuckyPercentageTextView();
-
             ((TextView) findViewById(R.id.tvResultLabel)).setText(R.string.result_label);
             updateResultAccessibility(true);
             long hapticDuration = playHapticResult(aDice);
@@ -460,17 +450,6 @@ public class MainActivity extends Activity {
         textView.setText(UsefulThings.lastDice[0] == null ? getString(R.string.not_thrown_yet) : UsefulThings.lastDice[0]);
     } // end fillLastDiceTextView.
 
-    // Fill also the luck percentage text view:
-    public void fillLuckyPercentageTextView() {
-        if (UsefulThings.lastDice[0] != null) {
-            // Refill also the lucky percentage:
-            TextView textView2 = findViewById(R.id.tvLuckyPercentage);
-            textView2.setText(getString(R.string.luck_format, UsefulThings.iGeneralAverage));
-        } else {
-            ((TextView) findViewById(R.id.tvLuckyPercentage)).setText(R.string.lucky_percentage);
-        }
-    } // end fill lucky percentage text view.
-
     public void showDiceAsImages() {
         showDiceAsImages(false);
     }
@@ -483,11 +462,17 @@ public class MainActivity extends Activity {
             totalView.setVisibility(View.GONE);
             return;
         }
-        int size = (int) (Math.min(104, (getResources().getDisplayMetrics().widthPixels /
-                getResources().getDisplayMetrics().density - 96) / 3) * getResources().getDisplayMetrics().density);
+        int diceCount = UsefulThings.lastDice[0].split(", ").length;
+        float density = getResources().getDisplayMetrics().density;
+        float screenWidthDp = getResources().getDisplayMetrics().widthPixels / density;
+        int columns = diceCount <= 2 ? diceCount : 3;
+        grid.setColumnCount(columns);
+        int maxSizeDp = diceCount == 1 ? 180 : diceCount == 2 ? 140 : 112;
+        int size = (int) (Math.min(maxSizeDp, (screenWidthDp - 72) / columns) * density);
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            int landscapeSize = UsefulThings.lastDice[0].split(", ").length > 3 ? 68 : 90;
-            size = Math.min(size, (int) (landscapeSize * getResources().getDisplayMetrics().density));
+            int landscapeSize = diceCount == 1 ? 150
+                    : diceCount == 2 ? 120 : diceCount == 3 ? 100 : 82;
+            size = Math.min(size, (int) (landscapeSize * density));
         }
         int total = 0;
         for (String s : UsefulThings.lastDice[0].split(", ")) {

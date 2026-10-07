@@ -11,7 +11,6 @@ public class UsefulThings {
     public final static String PREFS_NAME = "pdSettings";
     public static boolean isNotFirstRunning = false;
     public static String[] lastDice;
-    public static int iGeneralAverage = 0;
     public static String curLocale = "";
 
     private final Context contextHere;
@@ -30,7 +29,6 @@ public class UsefulThings {
             for (int i = 0; i < lastDice.length; i++) {
                 lastDice[i] = historyPreferences.getString("history_" + i, null);
             }
-            calculateAverageOfLastHandsOfDice();
         }
 
     } // end initialise things function.
@@ -49,7 +47,6 @@ public class UsefulThings {
 
     public static void clearHistory() {
         Arrays.fill(lastDice, null);
-        iGeneralAverage = 0;
         saveHistory();
     }
 
@@ -60,61 +57,6 @@ public class UsefulThings {
             else editor.putString("history_" + i, lastDice[i]);
         }
         editor.apply();
-    }
-
-    // A function to calculate and show the lucky:
-    public static void calculateAverageOfLastHandsOfDice() {
-        // An array for the last dice hands average:
-        double[] aiLastAverages = new double[MainActivity.numberOfDiceInHistory];
-
-        // Insert the last averages into aiLastAverages:
-        for (int i = 0; i < lastDice.length; i++) {
-            if (lastDice[i] != null) {
-                String[] theDiceOfAHand; // an array which holds the number of a
-                // hand separately.
-                theDiceOfAHand = lastDice[i].split(", ");
-                // Add the values of the string array above as digits and make
-                // the average:
-                double curDiceHandAverage = 0.0;
-                for (String s : theDiceOfAHand) {
-                    curDiceHandAverage += Integer.parseInt(s);
-                } // end nested loop.
-                curDiceHandAverage = curDiceHandAverage / theDiceOfAHand.length;
-                // Insert the average into aiLastAverages:
-                aiLastAverages[i] = curDiceHandAverage;
-            } else {
-                break;
-            }
-        } // end for.
-
-        // Make the general average:
-        double generalAverage = 0.0;
-        int it = 0; // counts how many hands were thrown:
-        for (int i = 0; i < aiLastAverages.length; i++) {
-            if (lastDice[i] != null) {
-                generalAverage += aiLastAverages[i];
-                it++;
-            } else {
-                break;
-            }
-        } // end for.
-
-        // Final result:
-        if (it == 0) {
-            iGeneralAverage = 0;
-            return;
-        }
-        generalAverage = generalAverage / it;
-
-        // Make it as percentage:
-        generalAverage = generalAverage - 1;
-        generalAverage = generalAverage * 100 / 5;
-
-        // Ceiling it to the closest integer:
-        generalAverage = Math.ceil(generalAverage);
-
-        iGeneralAverage = (int) generalAverage;
-
     }
 
     // Methods for save and read preferences with SharedPreferences:

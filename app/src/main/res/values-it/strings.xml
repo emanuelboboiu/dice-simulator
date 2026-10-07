@@ -16,9 +16,6 @@
     <string name="button_send">Lancia ora!</string>
     <string name="button_history">Ultimi lanci</string>
     <string name="thrown_dice">Dadi mostrati come testo</string>
-    <string name="lucky_percentage">Fortuna nei lanci recenti</string>
-    <string name="lucky_calculated">"Fortuna: "</string>
-    <string name="luck_format">Fortuna: %1$d%%</string>
     <string name="image">Dado</string>
     <string name="title_activity_display_message">Ultimi dadi lanciati</string>
     <string name="not_thrown_yet">Nessun lancio</string>
