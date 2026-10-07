@@ -190,6 +190,7 @@ Cititorul de ecran continuă să citească în mod normal comenzile și informa�
 - `compileSdk` și `targetSdk` au fost actualizate la API 36.
 - Proiectul folosește Java 17.
 - Versiunea minimă acceptată este Android API 24 (Android 7.0).
+- Ecranele secundare de setări respectă zonele sigure ale sistemului pe Android 15 și versiunile ulterioare, inclusiv pe telefoane și tablete.
 - Namespace-ul aplicației este declarat în configurația Gradle modernă.
 - Au fost actualizate Android Gradle Plugin și Gradle Wrapper.
 - A fost eliminată permisiunea Internet, deoarece aplicația nu are nevoie de acces la rețea.
