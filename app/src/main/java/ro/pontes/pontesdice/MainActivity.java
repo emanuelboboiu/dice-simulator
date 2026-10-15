@@ -364,15 +364,15 @@ public class MainActivity extends Activity {
         return true;
     }
 
-    public void handleShakeEvent(int count) {
-        throwActions();
+    public boolean handleShakeEvent(int count) {
+        return throwActions();
     }
 
     public void throwDice(View view) {
         throwActions();
     }
 
-    public void throwActions() {
+    public boolean throwActions() {
         // Throws only if there are not still spoken:
         if (!isSpeaking && SystemClock.elapsedRealtime() >= nextRollAllowedAt) {
 
@@ -440,8 +440,9 @@ public class MainActivity extends Activity {
                 updateRollAvailability();
             }
             startVoiceAnnouncement(aDice);
-
+            return true;
         } // end if is not speaking.
+        return false;
     } // end throw actions function.
 
     // Methods for onResume method, and other shows in application:

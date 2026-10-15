@@ -13,20 +13,21 @@ public class ShakeDetector implements SensorEventListener {
      * Pierre from the Google Play Store and run it to see how many G's it takes
      * to register a shake
      */
-    private static final float SHAKE_THRESHOLD_GRAVITY = 2.2F;
-    private static final int SHAKE_SLOP_TIME_MS = 3000;
+    private static final float SHAKE_THRESHOLD_GRAVITY = 1.8F;
+    private static final int SHAKE_SLOP_TIME_MS = 700;
     private static final int SHAKE_COUNT_RESET_TIME_MS = 15000;
 
     private OnShakeListener mListener;
     private long mShakeTimestamp;
     private int mShakeCount;
+    private boolean mWasAboveThreshold;
 
     public void setOnShakeListener(OnShakeListener listener) {
         this.mListener = listener;
     }
 
     public interface OnShakeListener {
-        void onShake(int count);
+        boolean onShake(int count);
     }
 
     @Override
@@ -49,23 +50,27 @@ public class ShakeDetector implements SensorEventListener {
             // gForce will be close to 1 when there is no movement.
             float gForce = (float) Math.sqrt(gX * gX + gY * gY + gZ * gZ);
 
-            if (gForce > SHAKE_THRESHOLD_GRAVITY) {
+            boolean isAboveThreshold = gForce > SHAKE_THRESHOLD_GRAVITY;
+            if (isAboveThreshold && !mWasAboveThreshold) {
                 final long now = System.currentTimeMillis();
-                // ignore shake events too close to each other (2500ms)
+                // Ignore separate shake impulses that arrive too close together.
                 if (mShakeTimestamp + SHAKE_SLOP_TIME_MS > now) {
+                    mWasAboveThreshold = true;
                     return;
                 }
 
-                // reset the shake count after 3 seconds of no shakes
+                // Reset the shake count after a longer period without an accepted shake.
                 if (mShakeTimestamp + SHAKE_COUNT_RESET_TIME_MS < now) {
                     mShakeCount = 0;
                 }
 
-                mShakeTimestamp = now;
-                mShakeCount++;
-
-                mListener.onShake(mShakeCount);
+                int nextShakeCount = mShakeCount + 1;
+                if (mListener.onShake(nextShakeCount)) {
+                    mShakeTimestamp = now;
+                    mShakeCount = nextShakeCount;
+                }
             }
+            mWasAboveThreshold = isAboveThreshold;
         }
     }
 }
