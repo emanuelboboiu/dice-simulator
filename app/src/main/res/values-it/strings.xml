@@ -47,6 +47,11 @@
     <string name="checkbox_iswakelock">Mantieni lo schermo acceso</string>
     <string name="checkbox_haptic_feedback">Vibra durante il lancio</string>
     <string name="checkbox_haptic_result">Comunica il risultato con vibrazioni</string>
+    <string name="roll_interval">Intervallo minimo tra i lanci</string>
+    <string name="roll_interval_1_second">1 secondo</string>
+    <string name="roll_interval_2_seconds">2 secondi</string>
+    <string name="roll_interval_3_seconds">3 secondi</string>
+    <string name="roll_interval_5_seconds">5 secondi</string>
     <string name="sorting_method">Ordinamento dei dadi</string>
     <string name="sorting_descendent">Decrescente</string>
     <string name="sorting_ascendent">Crescente</string>

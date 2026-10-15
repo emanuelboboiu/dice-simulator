@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends Activity {
-    private static final long ROLL_COOLDOWN_MS = 5_000L;
     private static final long HAPTIC_RESULT_START_DELAY_MS = 350L;
     private static long nextRollAllowedAt;
     private final Handler cooldownHandler = new Handler(Looper.getMainLooper());
@@ -80,6 +79,7 @@ public class MainActivity extends Activity {
     public static boolean isWakeLock = true;
     public static boolean isHapticFeedback = true;
     public static boolean isHapticResult = false;
+    public static int rollCooldownSeconds = 2;
 
     public static Random rand = new Random();
     private Context c;
@@ -376,7 +376,7 @@ public class MainActivity extends Activity {
         // Throws only if there are not still spoken:
         if (!isSpeaking && SystemClock.elapsedRealtime() >= nextRollAllowedAt) {
 
-            nextRollAllowedAt = SystemClock.elapsedRealtime() + ROLL_COOLDOWN_MS;
+            nextRollAllowedAt = SystemClock.elapsedRealtime() + rollCooldownSeconds * 1_000L;
             updateRollAvailability();
 
             int[] aDice = new int[iNumberOfDice];

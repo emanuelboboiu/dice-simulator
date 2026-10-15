@@ -49,6 +49,11 @@
     <string name="checkbox_iswakelock">Keep screen awake</string>
     <string name="checkbox_haptic_feedback">Vibrate when rolling</string>
     <string name="checkbox_haptic_result">Announce the result with vibrations</string>
+    <string name="roll_interval">Minimum interval between rolls</string>
+    <string name="roll_interval_1_second">1 second</string>
+    <string name="roll_interval_2_seconds">2 seconds</string>
+    <string name="roll_interval_3_seconds">3 seconds</string>
+    <string name="roll_interval_5_seconds">5 seconds</string>
     <string name="sorting_method">Dice sorting</string>
     <string name="sorting_descendent">Descendant</string>
     <string name="sorting_ascendent">Ascendant</string>

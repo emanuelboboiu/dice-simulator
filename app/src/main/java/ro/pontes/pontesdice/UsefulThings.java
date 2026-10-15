@@ -112,6 +112,11 @@ public class UsefulThings {
         return value;
     } // end get integer preference from SharedPreference.
 
+    public int getIntSettings(String key, int defaultValue) {
+        SharedPreferences settings = contextHere.getSharedPreferences(PREFS_NAME, 0);
+        return settings.getInt(key, defaultValue);
+    }
+
     // Save a String value:
     public void saveStringSettings(String key, String value) {
         // We need an Editor object to make preference changes.
@@ -182,6 +187,15 @@ public class UsefulThings {
         // Announce every die value as a vibration pattern:
         MainActivity.isHapticResult = getBooleanSettings("isHapticResult", false);
 
+        // Minimum interval between two accepted rolls:
+        int rollCooldownSeconds = getIntSettings("rollCooldownSeconds", 2);
+        if (rollCooldownSeconds == 1 || rollCooldownSeconds == 2
+                || rollCooldownSeconds == 3 || rollCooldownSeconds == 5) {
+            MainActivity.rollCooldownSeconds = rollCooldownSeconds;
+        } else {
+            MainActivity.rollCooldownSeconds = 2;
+        }
+
         // Sorting method:
         MainActivity.sortMethod = getIntSettings("sortMethod");
 
@@ -233,6 +247,9 @@ public class UsefulThings {
 
         // Haptic result playback is optional and disabled by default:
         saveBooleanSettings("isHapticResult", false);
+
+        // Minimum interval between rolls:
+        saveIntSettings("rollCooldownSeconds", 2);
 
         // For sorting method:
         saveIntSettings("sortMethod", 2);

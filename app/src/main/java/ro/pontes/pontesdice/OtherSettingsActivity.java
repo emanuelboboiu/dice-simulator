@@ -31,6 +31,13 @@ public class OtherSettingsActivity extends Activity {
         CheckBox checkHapticResult = findViewById(R.id.haptic_result_checkbox);
         checkHapticResult.setChecked(MainActivity.isHapticResult);
 
+        int cooldownButtonId;
+        if (MainActivity.rollCooldownSeconds == 1) cooldownButtonId = R.id.radio_cooldown_1;
+        else if (MainActivity.rollCooldownSeconds == 3) cooldownButtonId = R.id.radio_cooldown_3;
+        else if (MainActivity.rollCooldownSeconds == 5) cooldownButtonId = R.id.radio_cooldown_5;
+        else cooldownButtonId = R.id.radio_cooldown_2;
+        ((RadioButton) findViewById(cooldownButtonId)).setChecked(true);
+
         // Check the radio button depending of sorting method chosen:
         int[] sortingButtons = {R.id.radio_none, R.id.radio_ascendant, R.id.radio_descendant};
         int resID = sortingButtons[Math.max(0, Math.min(2, MainActivity.sortMethod))];
@@ -87,5 +94,18 @@ public class OtherSettingsActivity extends Activity {
         UsefulThings ut = new UsefulThings(getApplicationContext());
         ut.saveIntSettings(key, MainActivity.sortMethod);
     } // end onRadioButtonClicked.
+
+    public void onCooldownRadioButtonClicked(View view) {
+        if (!((RadioButton) view).isChecked()) return;
+
+        int id = view.getId();
+        if (id == R.id.radio_cooldown_1) MainActivity.rollCooldownSeconds = 1;
+        else if (id == R.id.radio_cooldown_3) MainActivity.rollCooldownSeconds = 3;
+        else if (id == R.id.radio_cooldown_5) MainActivity.rollCooldownSeconds = 5;
+        else MainActivity.rollCooldownSeconds = 2;
+
+        new UsefulThings(getApplicationContext())
+                .saveIntSettings("rollCooldownSeconds", MainActivity.rollCooldownSeconds);
+    }
 
 } // end other settings activity class.
