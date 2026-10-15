@@ -1,4 +1,4 @@
-# Simulator de zaruri 4.0 — noutăți față de versiunea din 2025
+# Simulator de zaruri 4.1 — noutăți față de versiunea din 2025
 
 Document de lucru pentru selectarea noutăților care vor fi publicate în Google Play.
 
@@ -6,13 +6,13 @@ Document de lucru pentru selectarea noutăților care vor fi publicate în Googl
 
 - Baza comparației este starea proiectului din 17 septembrie 2025, identificată în Git prin commitul `6d52cd3`.
 - La acel moment proiectul avea `versionName 3.1` și `versionCode 13`.
-- Versiunea pregătită acum este **4.0**, cu `versionCode 15`.
-- Codul versiunii a rămas 15 deoarece această versiune nu a fost încă publicată în Google Play.
-- Data afișată în secțiunea „Despre” este 7 octombrie 2026.
+- Versiunea pregătită acum este **4.1**, cu `versionCode 16`.
+- Codul versiunii a fost incrementat cu o unitate pentru această versiune.
+- Data afișată în secțiunea „Despre” este 15 octombrie 2026.
 
 ## Rezumatul principalelor noutăți
 
-Versiunea 4.0 aduce o interfață refăcută, zaruri vectoriale mai mari, mod întunecat, o pictogramă adaptivă, animații, protecție împotriva aruncărilor repetate accidental, anunțuri vocale configurabile, redarea rezultatului prin vibrații, limba italiană, îmbunătățiri ample pentru cititoarele de ecran, opțiuni pentru menținerea ecranului activ și pentru aruncarea prin scuturare când ecranul este blocat.
+Versiunea 4.1 aduce o interfață refăcută, zaruri vectoriale mai mari, mod întunecat, o pictogramă adaptivă, animații, protecție împotriva aruncărilor repetate accidental, anunțuri vocale configurabile, redarea rezultatului prin vibrații, limba italiană, îmbunătățiri ample pentru cititoarele de ecran, opțiuni pentru menținerea ecranului activ și pentru aruncarea prin scuturare când ecranul este blocat.
 
 ## 1. Interfață refăcută și modernizată
 
@@ -29,7 +29,7 @@ Versiunea 4.0 aduce o interfață refăcută, zaruri vectoriale mai mari, mod î
   - comutatorul vocal apare primul în bara de sus;
   - „Setări” apare imediat după el;
   - „Șterge istoricul”, „Despre” și „Ieșire” sunt în meniul „Mai multe”.
-- Secțiunea „Despre” afișează versiunea 4.0 și data actualizării.
+- Secțiunea „Despre” afișează versiunea 4.1 și data actualizării.
 
 ## 2. Zaruri grafice noi și redimensionare adaptivă
 
@@ -233,7 +233,7 @@ Cititorul de ecran continuă să citească în mod normal comenzile și informa�
   - meniuri și setări;
   - mod întunecat;
   - rotația ecranului.
-- Versiunea 4.0 a fost instalată și verificată pe dispozitivul Android folosit pe parcursul dezvoltării.
+- Versiunea 4.1 a fost instalată și verificată pe dispozitivul Android folosit pe parcursul dezvoltării.
 - A fost instalată și verificată separat pe **Google Pixel 10 cu Android 17 / API 37**:
   - prima pornire;
   - TalkBack activ;
@@ -246,7 +246,7 @@ Cititorul de ecran continuă să citească în mod normal comenzile și informa�
 - Pe Pixel 10 au fost confirmate `versionName 4.0`, `versionCode 15` și `targetSdk 36`; înainte de finalizare, cerința minimă a fost actualizată la `minSdk 24` (Android 7.0).
 - Senzația fizică a vibrațiilor și scuturarea telefonului cu ecranul blocat necesită confirmare manuală; acestea nu pot fi evaluate complet prin capturi și comenzi ADB.
 
-## 15. Setările implicite în versiunea 4.0
+## 15. Setările implicite în versiunea 4.1
 
 - Două zaruri.
 - Sortare descrescătoare.
@@ -302,7 +302,7 @@ Aceste texte sunt propuneri de lucru. Pot fi scurtate sau combinate înainte de 
 - Modernizare pentru versiunile Android actuale.
 - Verificat pe Pixel 10 cu Android 17.
 
-## 17. Istoricul commiturilor principale pentru versiunea 4.0
+## 17. Istoricul commiturilor principale pentru versiunea 4.1
 
 În ordinea în care au fost realizate:
 
@@ -326,3 +326,4 @@ Aceste texte sunt propuneri de lucru. Pot fi scurtate sau combinate înainte de 
 18. `a10b5d9` — Improve shake detection responsiveness.
 19. `fb0b2df` — Add configurable roll interval.
 20. `927315a` — Wait for recorded voice completion.
+21. `7c1cb56` — Add configurable shake strength.
