@@ -80,6 +80,7 @@ public class MainActivity extends Activity {
     public static boolean isHapticFeedback = true;
     public static boolean isHapticResult = false;
     public static int rollCooldownSeconds = 2;
+    public static int shakeStrength = 1; // 0 sensitive, 1 medium, 2 strong.
 
     public static Random rand = new Random();
     private Context c;
@@ -202,6 +203,7 @@ public class MainActivity extends Activity {
         mLockedShakeWakeLock.setReferenceCounted(false);
         registerReceiver(mScreenOnReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
         mShakeDetector = new ShakeDetector();
+        mShakeDetector.setShakeStrength(shakeStrength);
         /*
          * method you would use to setup whatever you want done once the
          * device has been shook.
@@ -228,6 +230,7 @@ public class MainActivity extends Activity {
         updateRollAvailability();
         updateWakeLock();
         invalidateOptionsMenu();
+        mShakeDetector.setShakeStrength(shakeStrength);
         if (voiceMode == 1 && !isTouchExplorationEnabled()) ensureTextToSpeech();
 
         // To delete, just a test:
@@ -351,6 +354,7 @@ public class MainActivity extends Activity {
                 UsefulThings tempUT = new UsefulThings(c);
                 tempUT.setDefaultSettings();
                 tempUT.chargeSettings();
+                mShakeDetector.setShakeStrength(shakeStrength);
                 // To be sure the shake detection will be
                 // again available, as a default setting:
                 mSensorManager.registerListener(mShakeDetector, mAccelerometer, SensorManager.SENSOR_DELAY_UI);

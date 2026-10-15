@@ -13,7 +13,9 @@ public class ShakeDetector implements SensorEventListener {
      * Pierre from the Google Play Store and run it to see how many G's it takes
      * to register a shake
      */
-    private static final float SHAKE_THRESHOLD_GRAVITY = 1.8F;
+    private static final float SENSITIVE_THRESHOLD_GRAVITY = 1.6F;
+    private static final float MEDIUM_THRESHOLD_GRAVITY = 1.8F;
+    private static final float STRONG_THRESHOLD_GRAVITY = 2.2F;
     private static final int SHAKE_SLOP_TIME_MS = 700;
     private static final int SHAKE_COUNT_RESET_TIME_MS = 15000;
 
@@ -21,6 +23,14 @@ public class ShakeDetector implements SensorEventListener {
     private long mShakeTimestamp;
     private int mShakeCount;
     private boolean mWasAboveThreshold;
+    private float shakeThresholdGravity = MEDIUM_THRESHOLD_GRAVITY;
+
+    public void setShakeStrength(int shakeStrength) {
+        if (shakeStrength == 0) shakeThresholdGravity = SENSITIVE_THRESHOLD_GRAVITY;
+        else if (shakeStrength == 2) shakeThresholdGravity = STRONG_THRESHOLD_GRAVITY;
+        else shakeThresholdGravity = MEDIUM_THRESHOLD_GRAVITY;
+        mWasAboveThreshold = false;
+    }
 
     public void setOnShakeListener(OnShakeListener listener) {
         this.mListener = listener;
@@ -50,7 +60,7 @@ public class ShakeDetector implements SensorEventListener {
             // gForce will be close to 1 when there is no movement.
             float gForce = (float) Math.sqrt(gX * gX + gY * gY + gZ * gZ);
 
-            boolean isAboveThreshold = gForce > SHAKE_THRESHOLD_GRAVITY;
+            boolean isAboveThreshold = gForce > shakeThresholdGravity;
             if (isAboveThreshold && !mWasAboveThreshold) {
                 final long now = System.currentTimeMillis();
                 // Ignore separate shake impulses that arrive too close together.

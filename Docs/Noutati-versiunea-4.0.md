@@ -147,6 +147,8 @@ Cititorul de ecran continuă să citească în mod normal comenzile și informa�
 - Opțiunea este activată implicit și împiedică stingerea ecranului cât timp aplicația este folosită.
 - Poate fi dezactivată pentru economisirea bateriei.
 - Aruncarea prin scuturarea telefonului rămâne disponibilă și poate fi activată sau dezactivată.
+- Nivelul scuturării poate fi ales dintre sensibil, mediu și puternic.
+- Nivelul mediu folosește sensibilitatea actuală de 1,8 g și este alegerea implicită; nivelul sensibil folosește 1,6 g, iar nivelul puternic reproduce vechiul prag de 2,2 g.
 - A fost adăugată opțiunea „Aruncă și cu ecranul blocat”.
 - Această opțiune este dezactivată implicit și avertizează că poate consuma mai multă baterie.
 - Când este activată, aplicația poate continua să urmărească accelerometrul după blocarea ecranului.
@@ -252,6 +254,7 @@ Cititorul de ecran continuă să citească în mod normal comenzile și informa�
 - Anunțarea vocală activată.
 - Voci înregistrate selectate.
 - Aruncare prin scuturare activată.
+- Nivel mediu pentru scuturare.
 - Aruncare cu ecranul blocat dezactivată.
 - Menținerea ecranului activată.
 - Vibrația scurtă la aruncare activată.
@@ -292,6 +295,7 @@ Aceste texte sunt propuneri de lucru. Pot fi scurtate sau combinate înainte de 
 - Limba italiană.
 - Alegerea separată a limbii vocilor.
 - Menținerea ecranului activ.
+- Trei niveluri pentru sensibilitatea scuturării.
 - Aruncare opțională prin scuturare cu ecranul blocat.
 - Istoric clarificat și persistent.
 - Eliminarea procentajului de noroc.
@@ -321,3 +325,4 @@ Aceste texte sunt propuneri de lucru. Pot fi scurtate sau combinate înainte de 
 17. `3916c4f` — Finished version 4.0 (anunțarea automată a noului număr de zaruri pentru TalkBack).
 18. `a10b5d9` — Improve shake detection responsiveness.
 19. `fb0b2df` — Add configurable roll interval.
+20. `927315a` — Wait for recorded voice completion.

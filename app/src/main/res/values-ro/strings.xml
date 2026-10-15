@@ -29,6 +29,10 @@
     <string name="checkbox_iswakelock">Menținere ecran activ</string>
     <string name="checkbox_haptic_feedback">Vibrează la aruncare</string>
     <string name="checkbox_haptic_result">Redă rezultatul prin vibrații</string>
+    <string name="shake_level">Nivelul scuturării</string>
+    <string name="shake_level_sensitive">Sensibilă (mișcare ușoară)</string>
+    <string name="shake_level_medium">Medie</string>
+    <string name="shake_level_strong">Puternică</string>
     <string name="roll_interval">Interval minim între aruncări</string>
     <string name="roll_interval_1_second">1 secundă</string>
     <string name="roll_interval_2_seconds">2 secunde</string>

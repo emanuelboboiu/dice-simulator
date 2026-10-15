@@ -47,6 +47,10 @@
     <string name="checkbox_iswakelock">Mantieni lo schermo acceso</string>
     <string name="checkbox_haptic_feedback">Vibra durante il lancio</string>
     <string name="checkbox_haptic_result">Comunica il risultato con vibrazioni</string>
+    <string name="shake_level">Livello di scuotimento</string>
+    <string name="shake_level_sensitive">Sensibile (movimento leggero)</string>
+    <string name="shake_level_medium">Medio</string>
+    <string name="shake_level_strong">Forte</string>
     <string name="roll_interval">Intervallo minimo tra i lanci</string>
     <string name="roll_interval_1_second">1 secondo</string>
     <string name="roll_interval_2_seconds">2 secondi</string>

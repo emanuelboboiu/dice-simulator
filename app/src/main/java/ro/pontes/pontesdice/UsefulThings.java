@@ -178,6 +178,11 @@ public class UsefulThings {
         // Get the setting for shake on pause:
         MainActivity.isOnShakeInPause = getBooleanSettings("isOnShakeInPause");
 
+        // Required shake strength: 0 sensitive, 1 medium, 2 strong.
+        int shakeStrength = getIntSettings("shakeStrength", 1);
+        MainActivity.shakeStrength = shakeStrength >= 0 && shakeStrength <= 2
+                ? shakeStrength : 1;
+
         // For keeping screen awake:
         MainActivity.isWakeLock = getBooleanSettings("isWakeLock");
 
@@ -238,6 +243,9 @@ public class UsefulThings {
 
         // For shake if screen is blocked:
         saveBooleanSettings("isOnShakeInPause", false);
+
+        // Medium shake strength is the default:
+        saveIntSettings("shakeStrength", 1);
 
         // For keeping screen awake:
         saveBooleanSettings("isWakeLock", true);

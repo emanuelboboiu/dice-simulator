@@ -38,6 +38,14 @@ public class OtherSettingsActivity extends Activity {
         else cooldownButtonId = R.id.radio_cooldown_2;
         ((RadioButton) findViewById(cooldownButtonId)).setChecked(true);
 
+        int[] shakeStrengthButtons = {
+                R.id.radio_shake_sensitive,
+                R.id.radio_shake_medium,
+                R.id.radio_shake_strong
+        };
+        int shakeStrength = Math.max(0, Math.min(2, MainActivity.shakeStrength));
+        ((RadioButton) findViewById(shakeStrengthButtons[shakeStrength])).setChecked(true);
+
         // Check the radio button depending of sorting method chosen:
         int[] sortingButtons = {R.id.radio_none, R.id.radio_ascendant, R.id.radio_descendant};
         int resID = sortingButtons[Math.max(0, Math.min(2, MainActivity.sortMethod))];
@@ -106,6 +114,18 @@ public class OtherSettingsActivity extends Activity {
 
         new UsefulThings(getApplicationContext())
                 .saveIntSettings("rollCooldownSeconds", MainActivity.rollCooldownSeconds);
+    }
+
+    public void onShakeStrengthRadioButtonClicked(View view) {
+        if (!((RadioButton) view).isChecked()) return;
+
+        int id = view.getId();
+        if (id == R.id.radio_shake_sensitive) MainActivity.shakeStrength = 0;
+        else if (id == R.id.radio_shake_strong) MainActivity.shakeStrength = 2;
+        else MainActivity.shakeStrength = 1;
+
+        new UsefulThings(getApplicationContext())
+                .saveIntSettings("shakeStrength", MainActivity.shakeStrength);
     }
 
 } // end other settings activity class.
