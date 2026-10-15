@@ -55,13 +55,15 @@ Versiunea 4.0 aduce o interfață refăcută, zaruri vectoriale mai mari, mod î
 
 ## 4. Protecție împotriva aruncărilor repetate accidental
 
-- După fiecare aruncare există un interval minim de cinci secunde în care nu poate fi generat un alt rezultat.
+- După fiecare aruncare există un interval minim configurabil în care nu poate fi generat un alt rezultat.
+- Utilizatorul poate alege un interval de 1, 2, 3 sau 5 secunde din „Alte setări”.
+- Valoarea implicită este de două secunde.
 - Protecția se aplică atât butonului, cât și scuturării telefonului.
 - În timpul pauzei, butonul „Aruncă acum!” rămâne dezactivat.
 - Un cronometru discret apare sub buton și arată secundele rămase.
 - Cronometrul nu primește focalizarea de accesibilitate și nu este citit repetat de TalkBack.
 - Textul butonului rămâne constant; nu mai conține numărătoarea inversă.
-- Dacă este activată redarea haptică a rezultatului și modelul de vibrații durează mai mult de cinci secunde, o nouă aruncare rămâne blocată până la terminarea vibrațiilor.
+- Dacă este activată redarea haptică a rezultatului și modelul de vibrații durează mai mult decât intervalul ales, o nouă aruncare rămâne blocată până la terminarea vibrațiilor.
 - O nouă aruncare este blocată și cât timp aplicația redă vocal rezultatul.
 
 ## 5. Anunțuri vocale configurabile
@@ -149,7 +151,10 @@ Cititorul de ecran continuă să citească în mod normal comenzile și informa�
 - Această opțiune este dezactivată implicit și avertizează că poate consuma mai multă baterie.
 - Când este activată, aplicația poate continua să urmărească accelerometrul după blocarea ecranului.
 - Este folosit un wake lock limitat la situația necesară, iar senzorul și wake lock-ul sunt eliberate când nu mai sunt necesare.
-- Protecția de cinci secunde se aplică și aruncărilor pornite prin scuturare.
+- Sensibilitatea scuturării a fost mărită, astfel încât aruncarea să pornească printr-o mișcare mai naturală a telefonului.
+- Filtrul dintre impulsurile accelerometrului a fost redus la 700 ms.
+- O scuturare respinsă în timpul intervalului de protecție nu mai pornește o a doua pauză ascunsă.
+- Intervalul ales se aplică și aruncărilor pornite prin scuturare.
 
 ## 10. Mod întunecat și pictogramă nouă
 
@@ -214,7 +219,7 @@ Cititorul de ecran continuă să citească în mod normal comenzile și informa�
 - Verificări cu unul, două și șase zaruri.
 - Verificări pentru:
   - animație;
-  - pauza de cinci secunde;
+  - intervalele de 1, 2, 3 și 5 secunde;
   - contor;
   - sunet;
   - voci înregistrate;
@@ -250,6 +255,7 @@ Cititorul de ecran continuă să citească în mod normal comenzile și informa�
 - Menținerea ecranului activată.
 - Vibrația scurtă la aruncare activată.
 - Redarea completă a rezultatului prin vibrații dezactivată.
+- Interval minim de două secunde între aruncări.
 - Pentru o limbă de sistem neacceptată se folosește engleza.
 
 ## 16. Variante orientative pentru Google Play
@@ -273,7 +279,8 @@ Aceste texte sunt propuneri de lucru. Pot fi scurtate sau combinate înainte de 
 - Pictogramă adaptivă nouă.
 - Animație la aruncare.
 - Selectarea rapidă a unu până la șase zaruri.
-- Pauză de cinci secunde între aruncări.
+- Interval configurabil de 1, 2, 3 sau 5 secunde între aruncări.
+- Scuturare mai sensibilă și mai rapidă.
 - Cronometru discret pentru următoarea aruncare.
 - Voci înregistrate sau vocea telefonului.
 - Comutator vocal rapid în bara de sus.
@@ -311,3 +318,5 @@ Aceste texte sunt propuneri de lucru. Pot fi scurtate sau combinate înainte de 
 15. `8bc26e7` — Enlarge dice and remove luck score.
 16. `56bf41e` — Clarify history order.
 17. `3916c4f` — Finished version 4.0 (anunțarea automată a noului număr de zaruri pentru TalkBack).
+18. `a10b5d9` — Improve shake detection responsiveness.
+19. `fb0b2df` — Add configurable roll interval.
